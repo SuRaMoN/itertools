@@ -14,19 +14,13 @@ class ChainIterator implements Iterator {
 	public $currentSubIterator;
 
 	function __construct($iterator) {
-		if($iterator instanceof Traversable) {
-			$this->iterator = $iterator;
-		} else if(is_array($iterator)) {
-			$this->iterator = new ArrayIterator($iterator);
-		} else {
-			throw new Exception('Constructing ChainIterator with unkown param type: ' . gettype($iterator));
-		}
+		$this->iterator = IterUtil::asIterator($iterator);
 		$this->currentSubIterator = new EmptyIterator();
 	}
 
 	function setNextValidSubIterator() {
 		while($this->iterator->valid()) {
-			$this->currentSubIterator = $this->iterator->current();
+			$this->currentSubIterator = IterUtil::asIterator($this->iterator->current());
 			$this->currentSubIterator->rewind();
 			if($this->currentSubIterator->valid()) {
 				return;

@@ -13,10 +13,7 @@ class ChunkedIterator extends IteratorIterator
     protected $chunk;
 
     public function __construct($iterator, $chunkSize) {
-		if(is_array($iterator)) {
-			$iterator = new ArrayIterator($iterator);
-		}
-        parent::__construct($iterator);
+        parent::__construct(is_array($iterator) ? new ArrayIterator($iterator) : $iterator);
         $this->chunkSize = $chunkSize;
 		$this->chunk = array();
     }

@@ -5,14 +5,15 @@ namespace itertools;
 use Exception;
 use IteratorIterator;
 use Traversable;
+use ArrayIterator;
 
 
 class MapIterator extends IteratorIterator {
 
 	protected $callback;
 
-	public function __construct(Traversable $iterator, $callback) {
-		parent::__construct($iterator);
+	public function __construct($iterator, $callback) {
+		parent::__construct(is_array($iterator) ? new ArrayIterator($iterator) : $iterator);
 		if (!is_callable($callback)) {
 			throw new Exception('The callback must be callable');
 		}
