@@ -2,46 +2,23 @@
 
 namespace itertools;
 
-use IteratorIterator;
+use Iterator;
 
 
-class TakeWhileIterator extends IteratorIterator {
+class TakeWhileIterator extends CurrentCachedIterator {
 
-	protected $currentValue;
-	protected $currentValueUpToDate;
 	protected $filter;
 
-	public function __construct($filter) {
-		$this->currentValueUpToDate = true;
+	public function __construct($inner, $filter) {
+		parent::__construct($inner);
 		$this->filter = $filter;
 	}
 
-	protected function updateCurrentValue() {
-		if(!$this->currentValueUpToDate) {
-			$this->currentValue = call_user_func($this->filter);
-			$this->currentValueUpToDate = true;
+	public function uncachedValid() {
+		if(!parent::uncachedValid()) {
+			return false;
 		}
-	}
-
-    function rewind() {
-    }
-
-    function current() {
-		$this->updateCurrentValue();
-        return $this->currentValue;
-    }
-
-    function key() {
-		return null;
-    }
-
-    function next() {
-		$this->currentValueUpToDate = false;
-    }
-
-    function valid() {
-		$this->updateCurrentValue();
-        return call_user_func($this->filter, $this->currentValue);
+        return call_user_func($this->filter, $this->current());
     }
 }
 

@@ -57,7 +57,6 @@ class ForkingIterator extends IteratorIterator {
 		parent::rewind();
 		do {
 			if($this->fork() == self::IS_CHILD) {
-				echo 1;
 				return;
 			}
 			while($this->childCount >= $this->maxChildren) {

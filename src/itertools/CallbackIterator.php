@@ -2,47 +2,22 @@
 
 namespace itertools;
 
-use Iterator;
-use Traversable;
 
+class CallbackIterator extends CurrentCachedIterator {
 
-class CallbackIterator extends MapIterator {
-
-	protected $currentValue;
-	protected $currentValueUpToDate;
 	protected $callback;
 
 	public function __construct($callback) {
-		$this->currentValueUpToDate = true;
+		parent::__construct(new RepeatIterator(true));
 		$this->callback = $callback;
 	}
 
-	protected function updateCurrentValue() {
-		if(!$this->currentValueUpToDate) {
-			$this->currentValue = call_user_func($this->filter);
-			$this->currentValueUpToDate = true;
-		}
+	public function uncachedCurrent() {
+        return call_user_func($this->callback);
+    }
+
+	public function valid() {
+		return true;
 	}
-
-    function rewind() {
-    }
-
-    function current() {
-		$this->updateCurrentValue();
-        return $this->currentValue;
-    }
-
-    function key() {
-		return null;
-    }
-
-    function next() {
-		$this->currentValueUpToDate = false;
-    }
-
-    function valid() {
-        return true;
-    }
-
 }
 
