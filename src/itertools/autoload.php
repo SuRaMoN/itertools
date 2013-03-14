@@ -13,6 +13,7 @@ spl_autoload_register(function ($class) {
 		'itertools\ForkingIterator',
 		'itertools\PdoIterator',
 		'itertools\CurrentCachedIterator',
+		'itertools\CsvIterator',
 	);
 	if(in_array($class, $available_classes)) {
 		require(__DIR__ . '/../' . strtr($class, '\\', '/') . '.php');

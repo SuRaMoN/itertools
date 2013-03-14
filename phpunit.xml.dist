@@ -19,6 +19,7 @@
 			<file>tests/PdoIteratorTest.php</file>
 			<file>tests/CurrentCachedIteratorTest.php</file>
 			<file>tests/CallbackIteratorTest.php</file>
+			<file>tests/CsvIteratorTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>
