@@ -12,6 +12,11 @@ class CurrentCachedIterator extends IteratorIterator
 	protected $cachedValid;
 	protected $validUpToDate;
 
+	public function __construct($innerIterator)
+	{
+		parent::__construct(IterUtil::asIterator($innerIterator));
+	}
+
     public function rewind() {
 		$this->currentUpToDate = false;
 		$this->validUpToDate = false;
