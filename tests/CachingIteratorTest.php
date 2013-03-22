@@ -38,5 +38,14 @@ class CachingIteratorTest extends PHPUnit_Framework_TestCase {
 			$this->assertTrue(false, 'should not be here');
 		}
 	}
+
+	/** @test */
+	public function testHasNext() {
+		$it = new CachingIterator(range(1, 5));
+		$this->assertTrue($it->hasNext());
+
+		$it = new CachingIterator(new EmptyIterator());
+		$this->assertFalse($it->hasNext());
+	}
 }
 
