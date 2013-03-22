@@ -18,6 +18,7 @@
 			<file>tests/ForkingIteratorTest.php</file>
 			<file>tests/PdoIteratorTest.php</file>
 			<file>tests/CurrentCachedIteratorTest.php</file>
+			<file>tests/CachingIteratorTest.php</file>
 			<file>tests/CallbackIteratorTest.php</file>
 			<file>tests/CsvIteratorTest.php</file>
         </testsuite>

@@ -6,6 +6,7 @@ use Traversable;
 use IteratorAggregate;
 use IteratorIterator;
 use ArrayIterator;
+use Iterator;
 
 
 class IterUtil {
