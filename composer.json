@@ -1,0 +1,19 @@
+
+{
+	"name": "SuRaMoN/itertools",
+	"description": "Iterators implemented in PHP, copy-pasted from Python",
+	"type": "library",
+	"homepage": "https://github.com/SuRaMoN/itertools",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "SuRaMoN",
+			"homepage": "https://github.com/SuRaMoN"
+		}
+	],
+	"require": { "php": ">=5.3" },
+	"autoload": {
+		"files": [ "src/itertools/autoload.php" ]
+	}
+}
+

@@ -18,15 +18,35 @@ class CachingIterator implements Iterator
 		$this->inner = IterUtil::asIterator($innerIterator);
 	}
 
+	protected function uncachedKey() {
+		return $this->inner->key();
+	}
+
+	protected function uncachedCurrent() {
+		return $this->inner->current();
+	}
+
+	protected function uncachedValid() {
+		return $this->inner->valid();
+	}
+
+	protected function uncachedRewind() {
+		return $this->inner->rewind();
+	}
+
+	protected function uncachedNext() {
+		return $this->inner->next();
+	}
+
 	public function cacheUpTo($count)
 	{
 		if(self::NO_REWIND == $this->rewindStatus) {
-			$this->inner->rewind();
+			$this->uncachedRewind();
 			$this->rewindStatus = self::CACHE_ISSUED_REWIND;
 		}
-		while(count($this->cache) < $count && $this->inner->valid()) {
-			$this->cache[] = (object) array('key' => $this->inner->key(), 'current' => $this->inner->current());
-			$this->inner->next();
+		while(count($this->cache) < $count && $this->uncachedValid()) {
+			$this->cache[] = (object) array('key' => $this->uncachedKey(), 'current' => $this->uncachedCurrent());
+			$this->uncachedNext();
 		}
 	}
 
@@ -37,7 +57,7 @@ class CachingIterator implements Iterator
 			return;
 		}
 		$this->cache = array();
-		$this->inner->rewind();
+		$this->uncachedRewind();
 		$this->rewindStatus = self::OUTER_ISSUED_REWIND;
     }
 

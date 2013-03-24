@@ -21,6 +21,7 @@
 			<file>tests/CachingIteratorTest.php</file>
 			<file>tests/CallbackIteratorTest.php</file>
 			<file>tests/CsvIteratorTest.php</file>
+			<file>tests/TakeWhileIteratorTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>
