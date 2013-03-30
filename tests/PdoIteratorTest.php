@@ -21,9 +21,13 @@ class PdoIteratorTest extends PHPUnit_Framework_TestCase {
 		foreach(range(0, 9) as $i) {
 			$pdo->exec('INSERT INTO entries ("name") VALUES (' . $i . ')');
 		}
-		$it = new PdoIterator($pdo, 'SELECT * FROM entries');
 
+		$it = new PdoIterator($pdo, 'SELECT * FROM entries');
 		$this->assertEquals(10, count(iterator_to_array($it)));
+
+
+		$it = new PdoIterator($pdo, 'SELECT * FROM entries WHERE name > :minName', array(':minName' => 5));
+		$this->assertEquals(4, count(iterator_to_array($it)));
 	}
 }
 
