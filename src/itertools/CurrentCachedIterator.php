@@ -17,9 +17,13 @@ class CurrentCachedIterator extends IteratorIterator
 		parent::__construct(IterUtil::asIterator($innerIterator));
 	}
 
-    public function rewind() {
+	public function invalidateCache() {
 		$this->currentUpToDate = false;
 		$this->validUpToDate = false;
+	}
+
+    public function rewind() {
+		$this->invalidateCache();
 		return parent::rewind();
     }
 
@@ -36,8 +40,7 @@ class CurrentCachedIterator extends IteratorIterator
     }
 
     public function next() {
-		$this->currentUpToDate = false;
-		$this->validUpToDate = false;
+		$this->invalidateCache();
 		return parent::next();
     }
 

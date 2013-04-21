@@ -23,6 +23,7 @@
 			<file>tests/CsvIteratorTest.php</file>
 			<file>tests/TakeWhileIteratorTest.php</file>
 			<file>tests/CallbackFilterIteratorTest.php</file>
+			<file>tests/CallbackRecursiveIteratorTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

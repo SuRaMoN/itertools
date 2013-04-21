@@ -16,6 +16,7 @@ spl_autoload_register(function ($class) {
 		'itertools\CsvIterator',
 		'itertools\CachingIterator',
 		'itertools\CallbackFilterIterator',
+		'itertools\CallbackRecursiveIterator',
 	);
 	if(in_array($class, $available_classes)) {
 		require(__DIR__ . '/../' . strtr($class, '\\', '/') . '.php');
