@@ -24,6 +24,7 @@
 			<file>tests/TakeWhileIteratorTest.php</file>
 			<file>tests/CallbackFilterIteratorTest.php</file>
 			<file>tests/CallbackRecursiveIteratorTest.php</file>
+			<file>tests/IterUtilTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>
