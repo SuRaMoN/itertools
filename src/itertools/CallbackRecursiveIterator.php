@@ -13,7 +13,7 @@ class CallbackRecursiveIterator extends CachingIterator implements RecursiveIter
 	protected $currentChildrenCache;
 	protected $isCurrentChildrenCacheValid = false;
 
-	public function __construct($startNodes, callable $getChildrenCallback)
+	public function __construct($startNodes, $getChildrenCallback)
 	{
 		parent::__construct(IterUtil::asIterator($startNodes));
 		$this->getChildrenCallback = $getChildrenCallback;
