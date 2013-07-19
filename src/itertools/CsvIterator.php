@@ -23,6 +23,11 @@ class CsvIterator extends TakeWhileIterator
 		);
 		$this->options = (object) array_merge($defaults, $options);
 
+		$unknownOptions = array_diff(array_keys($options), array_keys($defaults));
+		if(count($unknownOptions) != 0) {
+			throw new Exception('Unknown options specified: ' . implode(', ', $unknownOptions));
+		}
+
 		if(is_resource($file)) {
 			$this->fileHandle = $file;
 			$this->closeFileHandleOnDestruct = false;
