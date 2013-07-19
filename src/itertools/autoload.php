@@ -13,10 +13,15 @@ spl_autoload_register(function ($class) {
 		'itertools\ForkingIterator',
 		'itertools\PdoIterator',
 		'itertools\CurrentCachedIterator',
-		'itertools\CsvIterator',
+		'itertools\AbstractCsvIterator',
+		'itertools\FileCsvIterator',
+		'itertools\StringCsvIterator',
 		'itertools\CachingIterator',
 		'itertools\CallbackFilterIterator',
 		'itertools\CallbackRecursiveIterator',
+		'itertools\FileLineIterator',
+		'itertools\HistoryIterator',
+		'itertools\UniqueIterator',
 	);
 	if(in_array($class, $available_classes)) {
 		require(__DIR__ . '/../' . strtr($class, '\\', '/') . '.php');
