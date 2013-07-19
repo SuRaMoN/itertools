@@ -13,7 +13,7 @@ class UniqueIteratorTest extends PHPUnit_Framework_TestCase
 	{
 		$it = new ArrayIterator(array('1', 1, 1, 1, '1', '1'));
 
-		$data = iterator_to_array(new UniqueIterator($it, UniqueIterator::COMPARE_STRICT));
+		$data = iterator_to_array(new UniqueIterator($it, array('compareType' => UniqueIterator::COMPARE_STRICT)));
 		$this->assertEquals(array('1', 1, '1'), array_values($data));
 	}
 
@@ -22,7 +22,7 @@ class UniqueIteratorTest extends PHPUnit_Framework_TestCase
 	{
 		$it = new ArrayIterator(array('1', 1, 1, 1, '1', 1, 2, '2', 2, '2'));
 
-		$data = iterator_to_array(new UniqueIterator($it, UniqueIterator::COMPARE_NONSTRICT));
+		$data = iterator_to_array(new UniqueIterator($it, array('compareType' => UniqueIterator::COMPARE_NONSTRICT)));
 		$this->assertEquals(array('1', 2), array_values($data));
 	}
 }

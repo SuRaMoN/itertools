@@ -16,7 +16,7 @@ class StringCsvIterator extends AbstractCsvIterator
 			$input = new ArrayIterator(preg_split('/\r\n|\n|\r/', $input));
 		}
 		$this->lines = IterUtil::asIterator($input);
-
+		$this->lines->rewind();
 		parent::__construct($options);
 	}
 
