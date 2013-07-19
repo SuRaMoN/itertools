@@ -2,7 +2,7 @@
 
 namespace itertools;
 
-use Exception;
+use InvalidArgumentException;
 use EmptyIterator;
 
 
@@ -25,19 +25,21 @@ class CsvIterator extends TakeWhileIterator
 
 		$unknownOptions = array_diff(array_keys($options), array_keys($defaults));
 		if(count($unknownOptions) != 0) {
-			throw new Exception('Unknown options specified: ' . implode(', ', $unknownOptions));
+			throw new InvalidArgumentException('Unknown options specified: ' . implode(', ', $unknownOptions));
 		}
 
 		if(is_resource($file)) {
 			$this->fileHandle = $file;
 			$this->closeFileHandleOnDestruct = false;
-		} else {
+		} else if(is_string($file)) {
 			$this->fileHandle = fopen($file, 'r');
 			$this->closeFileHandleOnDestruct = true;
-		}
 
-		if($this->fileHandle === false) {
-			throw new Exception('Could not open csv file');
+			if($this->fileHandle === false) {
+				throw new InvalidArgumentException("Could not open csv file with path: '$file'");
+			}
+		} else {
+			throw new InvalidArgumentException('You must provide either a stream or filename to the csv iterator, you provided a ' . gettype($file));
 		}
 
 		if($this->options->hasHeader) {
