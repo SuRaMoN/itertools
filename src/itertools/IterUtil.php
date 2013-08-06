@@ -2,12 +2,13 @@
 
 namespace itertools;
 
-use Traversable;
+use ArrayIterator;
+use Exception;
+use InvalidArgumentException;
+use Iterator;
 use IteratorAggregate;
 use IteratorIterator;
-use ArrayIterator;
-use Iterator;
-use Exception;
+use Traversable;
 
 
 class IterUtil
@@ -21,6 +22,17 @@ class IterUtil
 		} else {
 			return new IteratorIterator($traversable);
 		}
+	}
+
+	public static function asTraversable($iterable)
+	{
+		if(is_array($iterable)) {
+			return new ArrayIterator($iterable);
+		}
+		if(!($iterable instanceof Traversable)) {
+			throw new InvalidArgumentException("Can't create a traversable out of: " . get_class($iterable));
+		}
+		return $iterable;
 	}
 
 	public static function asIterator($iterable)
