@@ -5,32 +5,38 @@ namespace itertools;
 use Iterator;
 
 
-class RepeatIterator implements Iterator {
-
+class RepeatIterator implements Iterator
+{
 	protected $value;
 	protected $key;
 
-	public function __construct($value) {
+	public function __construct($value)
+	{
 		$this->value = $value;
 		$this->key = 0;
 	}
 
-    function rewind() {
+    function rewind()
+	{
     }
 
-    function current() {
+    function current()
+	{
         return $this->value;
     }
 
-    function key() {
+    function key()
+	{
 		return $this->key;
     }
 
-    function next() {
+    function next()
+	{
 		$this->key += 1;
     }
 
-    function valid() {
+    function valid()
+	{
         return true;
     }	
 }

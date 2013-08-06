@@ -3,7 +3,7 @@ itertools
 
 A set of iterators for PHP based on pythons [itertools](http://docs.python.org/2/library/itertools.html).
 
-[![Build Status](https://travis-ci.org/SuRaMoN/itertools.png?branch=master)](https://travis-ci.org/SuRaMoN/itertools)
+[![Build Status](https://travis-ci.org/SuRaMoN/itertools.png?branch=master)](https://travis-ci.org/SuRaMoN/itertools) [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/SuRaMoN/itertools/badges/quality-score.png?s=e5c12675df1cfe519f2e2a8f89197f33ceb8304c)](https://scrutinizer-ci.com/g/SuRaMoN/itertools/) [![Code Coverage](https://scrutinizer-ci.com/g/SuRaMoN/itertools/badges/coverage.png?s=58f4d2d1cea8f7a5c4e7625404af3844eb8f2ebb)](https://scrutinizer-ci.com/g/SuRaMoN/itertools/)
 
 Some iterator examples
 ======================
@@ -66,7 +66,35 @@ Splits a iterator into smaller chunks. This can be used for batch processing.
     foreach(new Hunkingiterator($iterator, $batchSize) as $chunk) {
         $pdo->startTransaction();
         foreach($chunk as $element) {
-            // process the iterator elements. Using the transaction inside the CHunkItertor makes sure the transaction stays small
+            // process the iterator elements. Using the transaction inside the ChunkIterator makes sure the transaction stays small
         }
         $pdo->commit();
     }
+
+ForkingIterator
+---------------
+This linux-only iterator is designed to be iterated by a foreach loop and
+forks a new process for each iteration.
+
+    $elements = new RangeIterator(0, 10);
+    foreach(new ForkingIterator($elements) as $i) {
+        var_dump($i, getmypid()); // wil spawn a new process to iterate each element
+    }
+
+SliceIterator
+-------------
+Iterator equivalent of [array_slice](http://be1.php.net/manual/en/function.array-slice.php).
+
+    $lines = new SliceIterator(new FileLineIterator('file.txt'), 0, 1000); // will iterate the first 1000 lines of the file
+
+RangeIterator
+-------------
+Iterator equivalent of [range](http://be1.php.net/manual/en/function.range.php).
+
+    $lines = new SliceIterator(new FileLineIterator('file.txt'), 0, 1000); // will iterate the first 1000 lines of the file
+
+UniqueIterator
+--------------
+Iterator equivalent of [array_unique](http://be1.php.net/manual/en/function.array-unique.php) but only works for sorted input.
+
+    $uniqueEntries = new UniqueIterator(new ArrayIterator(array(1, 2, 2, 2, 3, 4, 2))); // will contain 1, 2, 3, 4, 2
