@@ -18,10 +18,10 @@ class SliceIterator extends IteratorIterator
 
 	public function __construct($iterable, $offset, $length = INF, $preserveKeys = false)
 	{
+		parent::__construct(IterUtil::asTraversable($iterable));
 		$this->offset = $offset;
 		$this->length = $length;
 		$this->preserveKeys = $preserveKeys;
-		parent::__construct(IterUtil::asTraversable($iterable));
 	}
 
 	public function key()

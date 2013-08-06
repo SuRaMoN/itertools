@@ -7,7 +7,8 @@ use PDO;
 
 class PdoIterator extends TakeWhileIterator
 {
-	public function __construct(PDO $pdo, $query, $params = array()) {
+	public function __construct(PDO $pdo, $query, $params = array())
+	{
 		if(count($params) != 0) {
 			$pdoStatement = $pdo->prepare($query);
 			$pdoStatement->execute($params);

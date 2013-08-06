@@ -5,11 +5,13 @@ namespace itertools;
 use PHPUnit_Framework_TestCase;
 
 
-class ForkingIteratorTest extends PHPUnit_Framework_TestCase {
-
+class ForkingIteratorTest extends PHPUnit_Framework_TestCase
+{
 	/** @test */
-	function testMainFunctionality() {
-		foreach(new ForkingIterator(range(0, 20), array('maxChildren' => 3)) as $i) {
+	function testMainFunctionality()
+	{
+		foreach(new ForkingIterator(range(0, 20), array('maxChildren' => 3)) as $i)
+		{
 		}
 	}
 }
