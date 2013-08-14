@@ -15,8 +15,9 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 		$defaultOptions = array(
 			'delimiter' => ',',
 			'enclosure' => '"',
-			'escape' => '\\',
+			'escape'    => '\\',
 			'hasHeader' => true,
+			'header'    => null,
 		);
 
 		$unknownOptions = array_diff(array_keys($options), array_keys($defaultOptions));
@@ -27,7 +28,11 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 		$this->options = array_merge($this->options, $defaultOptions, $options);
 
 		if($this->options['hasHeader']) {
-			$it = $this->getLineIteratorWithHeader();
+			if(null === $this->options['header']) {
+				$it = $this->getLineIteratorWithHeaderInFirstLine();
+			} else {
+				$it = $this->getLineIteratorWithHeader($this->options['header']);
+			}
 		} else {
 			$it = $this->getLineIteratorWithoutHeader();
 		}
@@ -39,17 +44,22 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 		return new CallbackIterator(array($this, 'retrieveNextCsvRow'));
 	}
 
-	protected function getLineIteratorWithHeader()
+	protected function getLineIteratorWithHeader($header)
 	{
-		$nextRowRetriever = array($this, 'retrieveNextCsvRow');
-		$header = call_user_func($nextRowRetriever);
-		if($header === false) {
+		if(false === $header || null === $header) {
 			return new EmptyIterator();
 		}
+		$nextRowRetriever = array($this, 'retrieveNextCsvRow');
 		return new CallbackIterator(function() use ($nextRowRetriever, $header) {
 			$row = call_user_func($nextRowRetriever);
 			return $row === false ? false : array_combine($header, $row);
 		});
+	}
+
+	protected function getLineIteratorWithHeaderInFirstLine()
+	{
+		$header = $this->retrieveNextCsvRow();
+		return $this->getLineIteratorWithHeader($header);
 	}
 
 	abstract public function retrieveNextCsvRow();
