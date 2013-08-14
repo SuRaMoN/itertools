@@ -29,11 +29,11 @@ class FileLineIterator extends TakeWhileIterator
 			$this->closeFileHandleOnDestruct = false;
 		} else if(is_string($file)) {
 			$this->fileHandle = fopen($file, 'r');
-			$this->closeFileHandleOnDestruct = true;
-
 			if($this->fileHandle === false) {
 				throw new InvalidArgumentException("Could not open file with path: '$file'");
 			}
+			$this->closeFileHandleOnDestruct = true;
+
 		} else {
 			throw new InvalidArgumentException('You must provide either a stream or filename to the file line iterator, you provided a ' . gettype($file));
 		}

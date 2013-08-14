@@ -22,11 +22,10 @@ class FileCsvIterator extends AbstractCsvIterator
 			$this->closeFileHandleOnDestruct = false;
 		} else if(is_string($file)) {
 			$this->fileHandle = fopen($file, 'r');
-			$this->closeFileHandleOnDestruct = true;
-
 			if($this->fileHandle === false) {
 				throw new InvalidArgumentException("Could not open csv file with path: '$file'");
 			}
+			$this->closeFileHandleOnDestruct = true;
 		} else {
 			throw new InvalidArgumentException('You must provide either a stream or filename to the csv iterator, you provided a ' . gettype($file));
 		}
