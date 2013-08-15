@@ -28,7 +28,7 @@ class FileLineIterator extends TakeWhileIterator
 			$this->fileHandle = $file;
 			$this->closeFileHandleOnDestruct = false;
 		} else if(is_string($file)) {
-			$this->fileHandle = fopen($file, 'r');
+			$this->fileHandle = @fopen($file, 'r');
 			if($this->fileHandle === false) {
 				throw new InvalidArgumentException("Could not open file with path: '$file'");
 			}

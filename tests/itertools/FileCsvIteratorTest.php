@@ -75,6 +75,40 @@ EOF
 		$this->assertEquals('a22', $data[1]['col2']);
 	}
 
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 */
+	public function testFileCsvIteratorWithInvalidArguments()
+	{
+		new FileCsvIterator(1);
+	}
+
+	/** @test */
+	public function testClosingHandle()
+	{
+		$lines = new FileCsvIterator(__FILE__);
+		$lines->__destruct();
+	}
+
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 */
+	public function testFileCsvIteratorWithNonExistingFilePath()
+	{
+		new FileCsvIterator(uniqid());
+	}
+
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 */
+	public function testFileCsvIteratorWithInvalidOptions()
+	{
+		new FileCsvIterator(__FILE__, array('unknownOption' => true));
+	}
+
 	protected function getMemoryFileHandle($content)
 	{
 		$fp = fopen('php://memory', 'rw');

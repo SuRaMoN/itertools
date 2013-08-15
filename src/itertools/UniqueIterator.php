@@ -2,6 +2,7 @@
 
 namespace itertools;
 
+use InvalidArgumentException;
 use FilterIterator;
 
 

@@ -2,10 +2,11 @@
 
 namespace itertools;
 
-use Exception;
+use InvalidArgumentException;
 use IteratorIterator;
 use Traversable;
 use ArrayIterator;
+
 
 /**
  * Iterator equivalent or [array_map](http://be1.php.net/manual/en/function.array-map.php).
@@ -21,7 +22,7 @@ class MapIterator extends IteratorIterator
 	{
 		parent::__construct(IterUtil::asTraversable($iterator));
 		if (!is_callable($callback)) {
-			throw new Exception('The callback must be callable');
+			throw new InvalidArgumentException('The callback must be callable');
 		}
 		$this->callback = $callback;
 	}

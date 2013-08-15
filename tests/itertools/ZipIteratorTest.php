@@ -23,6 +23,15 @@ class ZipIteratorTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals(array(3, 'c', 'C'), $zippedValues[2]);
 		$this->assertEquals(3, count($zippedValues));
 	}
+
+	/**
+	 * @test
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function testThrowsExceptionForEmptyInput()
+	{
+		new ZipIterator(array());
+	}
 }
 
  

@@ -2,6 +2,7 @@
 
 namespace itertools;
 
+use OutOfBoundsException;
 use Countable;
 use ArrayAccess;
 use IteratorAggregate;
@@ -18,7 +19,7 @@ use SplFixedArray;
  * This queue implementation has constant time complexity for:
  *  - push() / pop()
  *  - unshift() / shift()
- *  - offsetGet()
+ *  - offsetGet() / offsetSet()
  * It has linear time complexity for:
  *  - offsetUnset()
  */
@@ -31,6 +32,7 @@ class Queue implements ArrayAccess, Countable, IteratorAggregate
 
 	public function __construct($collection = array())
 	{
+		IterUtil::assertIsCollection($collection);
 		$this->data = new SplFixedArray(1);
 		$this->size = 0;
 		$this->headIndex = 0;
@@ -151,7 +153,7 @@ class Queue implements ArrayAccess, Countable, IteratorAggregate
 
 	protected function assertOffsetExists($offset)
 	{
-		if($offset < 0 || $offset >= $this->size) {
+		if(!$this->offsetExists($offset)) {
 			throw new OutOfBoundsException("Requested offset $offset for size {$this->size}");
 		}
 	}

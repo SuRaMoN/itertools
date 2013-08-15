@@ -48,6 +48,7 @@ class HistoryIterator extends IteratorIterator
 			return true;
 		}
 		$this->addToHistory(parent::current());
+		$this->hasStoredCurrent = true;
 		return true;
 	}
 

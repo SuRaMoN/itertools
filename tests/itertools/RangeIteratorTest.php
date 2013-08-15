@@ -15,6 +15,13 @@ class RangeIteratorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/** @test */
+	public function testRangeIteratorWithStepZero()
+	{
+		$range = new SliceIterator(new RangeIterator(1, 2, 0), 0, 20);
+		$this->assertEquals(array_fill(0, 20, 1), iterator_to_array($range));
+	}
+
+	/** @test */
 	public function testRangeIteratorWithInfiniteRange()
 	{
 		$infinteRange = new SliceIterator(new RangeIterator(1), 0, 10);

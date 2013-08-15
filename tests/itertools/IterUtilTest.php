@@ -2,15 +2,72 @@
 
 namespace itertools;
 
+use SimpleXMLElement;
+use IteratorIterator;
 use PHPUnit_Framework_TestCase;
 use ArrayIterator;
 
 
 class IterUtilTest extends PHPUnit_Framework_TestCase
 {
+	/** @test */
+	public function testAsIterator()
+	{
+		$this->assertTrue(IterUtil::asIterator(array()) instanceof ArrayIterator);
+		$this->assertTrue(IterUtil::asIterator(new RangeIterator(1, 2)) instanceof RangeIterator);
+		$this->assertTrue(IterUtil::asIterator(new Queue()) instanceof ArrayAccessIterator);
+		$this->assertTrue(IterUtil::asIterator(new SimpleXMLElement('<root/>')) instanceof IteratorIterator);
+	}
 
 	/** @test */
-	function testGetCurrentAndAdvanceForArray()
+	public function testAsTraversable()
+	{
+		$this->assertTrue(IterUtil::asTraversable(array()) instanceof ArrayIterator);
+		$this->assertTrue(IterUtil::asTraversable(new RangeIterator(1, 2)) instanceof RangeIterator);
+		$this->assertTrue(IterUtil::asTraversable(new Queue()) instanceof Queue);
+		$this->assertTrue(IterUtil::asTraversable(new SimpleXMLElement('<root/>')) instanceof SimpleXMLElement);
+	}
+
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 */
+	public function testAsTraversableWithNonTraversableAsArgument()
+	{
+		IterUtil::asTraversable(1);
+	}
+
+	/** @test */
+	public function testIsCollection()
+	{
+		$this->assertTrue(IterUtil::isCollection(array()));
+		$this->assertTrue(IterUtil::isCollection(new RangeIterator(1, 2)));
+		$this->assertTrue(IterUtil::isCollection(new Queue()));
+		$this->assertTrue(IterUtil::isCollection(new SimpleXMLElement('<root/>')));
+
+		$this->assertFalse(IterUtil::isCollection(1));
+	}
+
+	/** @test */
+	public function testAssertIsCollectionForCollections()
+	{
+		IterUtil::assertIsCollection(array());
+		IterUtil::assertIsCollection(new RangeIterator(1, 2));
+		IterUtil::assertIsCollection(new Queue());
+		IterUtil::assertIsCollection(new SimpleXMLElement('<root/>'));
+	}
+
+	/**
+	 * @test
+	 * @expectedException Exception
+	 */
+	public function testAssertIsCollectionForNonCollections()
+	{
+		IterUtil::assertIsCollection(1);
+	}
+
+	/** @test */
+	public function testGetCurrentAndAdvanceForArray()
 	{
 		$a = range(0, 5);
 		next($a);
@@ -25,7 +82,7 @@ class IterUtilTest extends PHPUnit_Framework_TestCase
 	 * @expectedException Exception
 	 * @expectedExceptionMessage Error while advancing iterable
 	 **/
-	function testGetCurrentAndAdvanceForArrayShouldThrowExceptionOnEndOfRange()
+	public function testGetCurrentAndAdvanceForArrayShouldThrowExceptionOnEndOfRange()
 	{
 		$a = range(0, 1);
 		next($a);
@@ -35,7 +92,7 @@ class IterUtilTest extends PHPUnit_Framework_TestCase
 	}
 
 	/** @test */
-	function testGetCurrentAndAdvanceForArrayShouldNotThrowErrorWHenProvidedWithDefault()
+	public function testGetCurrentAndAdvanceForArrayShouldNotThrowErrorWHenProvidedWithDefault()
 	{
 		$a = range(0, 1);
 		next($a);
@@ -46,7 +103,7 @@ class IterUtilTest extends PHPUnit_Framework_TestCase
 	}
 
 	/** @test */
-	function testGetCurrentAndAdvanceForIterator()
+	public function testGetCurrentAndAdvanceForIterator()
 	{
 		$a = new ArrayIterator(range(0, 5));
 		$a->rewind();
@@ -62,7 +119,7 @@ class IterUtilTest extends PHPUnit_Framework_TestCase
 	 * @expectedException Exception
 	 * @expectedExceptionMessage Error while advancing iterable
 	 **/
-	function testGetCurrentAndAdvanceForIteratorShouldThrowExceptionOnEndOfRange()
+	public function testGetCurrentAndAdvanceForIteratorShouldThrowExceptionOnEndOfRange()
 	{
 		$a = new ArrayIterator(range(0, 1));
 		$a->rewind();
@@ -73,7 +130,7 @@ class IterUtilTest extends PHPUnit_Framework_TestCase
 	}
 
 	/** @test */
-	function testGetCurrentAndAdvanceForIteratorShouldNotThrowErrorWHenProvidedWithDefault()
+	public function testGetCurrentAndAdvanceForIteratorShouldNotThrowErrorWHenProvidedWithDefault()
 	{
 		$a = new ArrayIterator(range(0, 1));
 		$a->rewind();

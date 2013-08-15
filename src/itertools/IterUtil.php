@@ -30,7 +30,7 @@ class IterUtil
 			return new ArrayIterator($iterable);
 		}
 		if(!($iterable instanceof Traversable)) {
-			throw new InvalidArgumentException("Can't create a traversable out of: " . get_class($iterable));
+			throw new InvalidArgumentException('Can\'t create a traversable out of: ' . (is_object($iterable) ? get_class($iterable) : gettype($iterable)));
 		}
 		return $iterable;
 	}
@@ -58,7 +58,7 @@ class IterUtil
 	public static function assertIsCollection($value)
 	{
 		if(!self::isCollection($value)) {
-			throw new Exception('The provided argument is not a collection: ' . gettype($value));
+			throw new Exception('The provided argument is not a collection: ' . (is_object($iterable) ? get_class($value) : gettype($value)));
 		}
 	}
 

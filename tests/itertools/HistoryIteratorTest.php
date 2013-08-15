@@ -18,13 +18,14 @@ class HistoryIteratorTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse($it->hasPrev());
 
 		$it->next();
-		$it->valid();
+		$this->assertTrue($it->valid());
+		$this->assertTrue($it->valid());
 		$this->assertEquals(2, $it->current());
 		$this->assertEquals(1, $it->prev(1));
 		$this->assertTrue($it->hasPrev());
 
 		$it->next();
-		$it->valid();
+		$this->assertTrue($it->valid());
 		$this->assertEquals(3, $it->current());
 		$this->assertEquals(2, $it->prev(1));
 		$this->assertEquals(1, $it->prev(2));

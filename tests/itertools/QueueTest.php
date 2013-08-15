@@ -112,10 +112,56 @@ class QueueTest extends PHPUnit_Framework_TestCase
 	}
 
 	/** @test */
+	public function testQueueBottom()
+	{
+		$queue = new Queue(array(1, 2, 3));
+		$this->assertEquals(1, $queue->bottom());
+	}
+
+	/** @test */
+	public function testQueueTop()
+	{
+		$queue = new Queue(array(1, 2, 3));
+		$this->assertEquals(3, $queue->top());
+	}
+
+	/** @test */
 	public function testQueueIteration()
 	{
 		$queue = new Queue(array(1, 2, 3));
 		$this->assertEquals(array(1, 2, 3), $queue->asArray());
+	}
+
+	/** @test */
+	public function testQueueOffsetGet()
+	{
+		$queue = new Queue(array(-1, 0, 1, 2, 3));
+		$queue->shift();
+		$queue->push(4);
+		$this->assertEquals(1, $queue->get(1));
+		$this->assertEquals(2, $queue->offsetGet(2));
+	}
+
+	/** @test */
+	public function testQueueOffsetSet()
+	{
+		$queue = new Queue(array(-1, 0, 1, 2, 3));
+		$queue->shift();
+		$queue->push(4);
+		$queue->set(0, 'a');
+		$queue->offsetSet(1, 'b');
+		$queue->offsetSet(5, 'f');
+		$this->assertEquals(array('a', 'b', 2, 3, 4, 'f'), $queue->asArray());
+	}
+
+	/**
+	 * @test
+	 * @expectedException \OutOfBoundsException
+	 */
+	public function testGetInvalidRange()
+	{
+		$queue = new Queue(array(0, 1, 2, 3));
+		$queue->get(4);
 	}
 
 	/** @test */
