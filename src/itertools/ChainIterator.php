@@ -8,17 +8,19 @@ use EmptyIterator;
 use ArrayIterator;
 
 
-class ChainIterator implements Iterator {
-
+class ChainIterator implements Iterator
+{
 	public $iterator;
 	public $currentSubIterator;
 
-	function __construct($iterator) {
+	public function __construct($iterator)
+	{
 		$this->iterator = IterUtil::asIterator($iterator);
 		$this->currentSubIterator = new EmptyIterator();
 	}
 
-	function setNextValidSubIterator() {
+	public function setNextValidSubIterator()
+	{
 		while($this->iterator->valid()) {
 			$this->currentSubIterator = IterUtil::asIterator($this->iterator->current());
 			$this->currentSubIterator->rewind();
@@ -30,20 +32,24 @@ class ChainIterator implements Iterator {
 		$this->currentSubIterator = new EmptyIterator();
 	}
 
-    function rewind() {
+    public function rewind()
+	{
 		$this->iterator->rewind();
 		$this->setNextValidSubIterator();
     }
 
-    function current() {
+    public function current()
+	{
         return $this->currentSubIterator->current();
     }
 
-    function key() {
+    public function key()
+	{
         return $this->currentSubIterator->key();
     }
 
-    function next() {
+    public function next()
+	{
 		$this->currentSubIterator->next();
 		if(!$this->currentSubIterator->valid()) {
 			$this->iterator->next();
@@ -51,7 +57,8 @@ class ChainIterator implements Iterator {
 		}
     }
 
-    function valid() {
+    public function valid()
+	{
         return $this->currentSubIterator->valid();
     }
 }

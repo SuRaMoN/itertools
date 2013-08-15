@@ -2,40 +2,49 @@
 
 namespace itertools;
 
-use Iterator;
+use IteratorIterator;
 
-
-class CachingIterator implements Iterator
+/**
+ * This iterator is able to prefetch its values and cache them.
+ * This you to look ahead of the current iteration position.
+ */
+class CachingIterator extends IteratorIterator
 {
-	const NO_REWIND = 'NO_REWIND', CACHE_ISSUED_REWIND = 'CACHE_ISSUED_REWIND', OUTER_ISSUED_REWIND = 'OUTER_ISSUED_REWIND';
+	const NO_REWIND = 'NO_REWIND';
+	const CACHE_ISSUED_REWIND = 'CACHE_ISSUED_REWIND';
+	const OUTER_ISSUED_REWIND = 'OUTER_ISSUED_REWIND';
 
 	protected $cache = array();
-	public $rewindStatus = self::NO_REWIND;
-	protected $inner;
+	protected $rewindStatus = self::NO_REWIND;
 
 	public function __construct($innerIterator)
 	{
-		$this->inner = IterUtil::asIterator($innerIterator);
+		parent::__construct(IterUtil::asIterator($innerIterator));
 	}
 
-	protected function uncachedKey() {
-		return $this->inner->key();
+	protected function uncachedKey()
+	{
+		return $this->getInnerIterator()->key();
 	}
 
-	protected function uncachedCurrent() {
-		return $this->inner->current();
+	protected function uncachedCurrent()
+	{
+		return $this->getInnerIterator()->current();
 	}
 
-	protected function uncachedValid() {
-		return $this->inner->valid();
+	protected function uncachedValid()
+	{
+		return $this->getInnerIterator()->valid();
 	}
 
-	protected function uncachedRewind() {
-		return $this->inner->rewind();
+	protected function uncachedRewind()
+	{
+		return $this->getInnerIterator()->rewind();
 	}
 
-	protected function uncachedNext() {
-		return $this->inner->next();
+	protected function uncachedNext()
+	{
+		return $this->getInnerIterator()->next();
 	}
 
 	public function cacheUpTo($count)
@@ -78,10 +87,10 @@ class CachingIterator implements Iterator
 		array_shift($this->cache);
     }
 
-	public function hasNext()
+	public function hasNext($offset = 1)
 	{
-		$this->cacheUpTo(1);
-		return count($this->cache) >= 1;
+		$this->cacheUpTo($offset);
+		return count($this->cache) >= $offset;
 	}
 
     public function valid()

@@ -7,6 +7,20 @@ use Traversable;
 use ArrayIterator;
 
 
+/**
+ * splits a iterator into smaller chunks. this can be used for batch processing.
+ *
+ * Example:
+ *     $iterator = new rangeiterator();
+ *     $batchsize = 100;
+ *     foreach(new hunkingiterator($iterator, $batchsize) as $chunk) {
+ *         $pdo->starttransaction();
+ *         foreach($chunk as $element) {
+ *             // process the iterator elements. using the transaction inside the chunkiterator makes sure the transaction stays small
+ *         }
+ *         $pdo->commit();
+ *     }
+ */
 class ChunkingIterator extends IteratorIterator
 {
     protected $chunkSize;
@@ -29,7 +43,7 @@ class ChunkingIterator extends IteratorIterator
 			return;
 		}
         $inner = $this->getInnerIterator();
-        for ($i = 0; $i < $this->chunkSize && $inner->valid(); $i++) {
+        for($i = 0; $i < $this->chunkSize && $inner->valid(); $i++) {
             $this->chunk[] = $inner->current();
             $inner->next();
         }
