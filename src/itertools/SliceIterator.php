@@ -5,6 +5,11 @@ namespace itertools;
 use IteratorIterator;
 
 
+/**
+ * Iterator equivalent of [array_slice](http://be1.php.net/manual/en/function.array-slice.php).
+ * Example:
+ *     $lines = new SliceIterator(new FileLineIterator('file.txt'), 0, 1000); // will iterate the first 1000 lines of the file
+ */
 class SliceIterator extends IteratorIterator
 {
 	const PRESERVE_KEYS = true;

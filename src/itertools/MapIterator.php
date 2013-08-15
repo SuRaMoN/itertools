@@ -7,7 +7,12 @@ use IteratorIterator;
 use Traversable;
 use ArrayIterator;
 
-
+/**
+ * Iterator equivalent or [array_map](http://be1.php.net/manual/en/function.array-map.php).
+ * Example:
+ *     $positiveNumbers = new RangeIterator(0, INF); // all numbers from 0 to infinity
+ *     $positiveSquareNumbers = new MapIterator($positiveNumbers, function($n) {return $n*$n;}); // all positive square numbers
+ */
 class MapIterator extends IteratorIterator
 {
 	protected $callback;

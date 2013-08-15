@@ -6,6 +6,19 @@ use IteratorIterator;
 use SplQueue;
 
 
+/**
+ * An iterator that keeps track of the elements it iterates. It differs from
+ * the CachingIterator in the standard PHP library because this implementations
+ * allows the history size to be specified.
+ *
+ * Example:
+ *     $range = new HistoryIterator(new ArrayIterator(range(1, 10)));
+ *     foreach($range as $i) {
+ *         if($range->hasPrev()) {
+ *             echo $i, $range->prev(), "\n";
+ *         }
+ *     }
+ */
 class HistoryIterator extends IteratorIterator
 {
 	protected $history;
@@ -15,7 +28,7 @@ class HistoryIterator extends IteratorIterator
 	public function __construct($innerIterator, $maxHistorySize = 1)
 	{
 		parent::__construct(IterUtil::asIterator($innerIterator));
-		$this->history = new SplQueue();
+		$this->history = new Queue();
 		$this->maxHistorySize = $maxHistorySize;
 		$this->hasStoredCurrent = false;
 	}

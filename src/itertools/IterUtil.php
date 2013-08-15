@@ -44,6 +44,24 @@ class IterUtil
 		}
 	}
 
+	public static function isCollection($value)
+	{
+		switch(true) {
+			case is_array($value):
+			case $value instanceof Traversable:
+				return true;
+			default:
+				return false;
+		}
+	}
+
+	public static function assertIsCollection($value)
+	{
+		if(!self::isCollection($value)) {
+			throw new Exception('The provided argument is not a collection: ' . gettype($value));
+		}
+	}
+
 	public static function getCurrentAndAdvance(&$iterable, $options = array())
 	{
 		if(is_array($iterable)) {

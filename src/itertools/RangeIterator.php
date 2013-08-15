@@ -4,7 +4,13 @@ namespace itertools;
 
 use Iterator;
 
-
+/**
+ * Iterator equivalent of [array_unique](http://be1.php.net/manual/en/function.array-unique.php)
+ * but only works for sorted input.
+ * Example:
+ *     Iterator equivalent of [range](http://be1.php.net/manual/en/function.range.php).
+ *     $lines = new SliceIterator(new FileLineIterator('file.txt'), 0, 1000); // will iterate the first 1000 lines of the file
+ */
 class RangeIterator implements Iterator
 {
 	protected $start;

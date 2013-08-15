@@ -32,24 +32,6 @@ Install Guide
 Some iterators explained
 ========================
 
-ZipIterator
------------
-Inspired by pythons [zip](http://docs.python.org/3.1/library/functions.html#zip) function. It can be constructed with an array of iterators and it iterates all of its arguments at the same same, returning an array of the elements of each iterator on the same iteration positon
-
-    $csv1 = new FileCsvIterator('file1.csv');
-    $csv2 = new FileCsvIterator('file2.csv');
-    foreach(new ZipIterator(array($csv1, $csv2)) as $combinedRows) {
-        $row1 = $combinedRows[0]; // a row in file1.csv
-        $row2 = $combinedRows[1]; // row in file2.csv on same position
-    }
-
-MapIterator
------------
-Iterator equivalent or [array_map](http://be1.php.net/manual/en/function.array-map.php).
-
-    $positiveNumbers = new RangeIterator(0, INF); // all numbers from 0 to infinity
-    $positiveSquareNumbers = new MapIterator($positiveNumbers, function($n) {return $n*$n;}); // all positive square numbers
-
 ChainIterator
 -------------
 Iterator equivalent of flattening a 2-dimensional array.
@@ -81,20 +63,52 @@ forks a new process for each iteration.
         var_dump($i, getmypid()); // wil spawn a new process to iterate each element
     }
 
+HistoryIterator
+---------------
+An iterator that keeps track of the elements it iterates. It differs from
+the CachingIterator in the standard PHP library because this implementations
+allows the history size to be specified.
+
+    $range = new HistoryIterator(new ArrayIterator(range(1, 10)));
+    foreach($range as $i) {
+        if($range->hasPrev()) {
+            echo $i, $range->prev(), "\n";
+        }
+    }
+
+MapIterator
+-----------
+Iterator equivalent or [array_map](http://be1.php.net/manual/en/function.array-map.php).
+
+    $positiveNumbers = new RangeIterator(0, INF); // all numbers from 0 to infinity
+    $positiveSquareNumbers = new MapIterator($positiveNumbers, function($n) {return $n*$n;}); // all positive square numbers
+
 SliceIterator
 -------------
 Iterator equivalent of [array_slice](http://be1.php.net/manual/en/function.array-slice.php).
 
     $lines = new SliceIterator(new FileLineIterator('file.txt'), 0, 1000); // will iterate the first 1000 lines of the file
 
-RangeIterator
--------------
-Iterator equivalent of [range](http://be1.php.net/manual/en/function.range.php).
-
-    $lines = new SliceIterator(new FileLineIterator('file.txt'), 0, 1000); // will iterate the first 1000 lines of the file
 
 UniqueIterator
 --------------
 Iterator equivalent of [array_unique](http://be1.php.net/manual/en/function.array-unique.php) but only works for sorted input.
 
     $uniqueEntries = new UniqueIterator(new ArrayIterator(array(1, 2, 2, 2, 3, 4, 2))); // will contain 1, 2, 3, 4, 2
+    
+RangeIterator
+-------------
+Iterator equivalent of [range](http://be1.php.net/manual/en/function.range.php).
+
+    $lines = new SliceIterator(new FileLineIterator('file.txt'), 0, 1000); // will iterate the first 1000 lines of the file
+
+ZipIterator
+-----------
+Inspired by pythons [zip](http://docs.python.org/3.1/library/functions.html#zip) function. It can be constructed with an array of iterators and it iterates all of its arguments at the same index, returning during each iteration an array of the elements of each iterator on the same iteration positon
+
+    $csv1 = new FileCsvIterator('file1.csv');
+    $csv2 = new FileCsvIterator('file2.csv');
+    foreach(new ZipIterator(array($csv1, $csv2)) as $combinedRows) {
+        $row1 = $combinedRows[0]; // a row in file1.csv
+        $row2 = $combinedRows[1]; // row in file2.csv on same position
+    }

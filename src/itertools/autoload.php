@@ -3,6 +3,7 @@
 spl_autoload_register(function ($class) {
 	$available_classes = array(
 		'itertools\AbstractCsvIterator',
+		'itertools\ArrayAccessIterator',
 		'itertools\CachingIterator',
 		'itertools\CallbackFilterIterator',
 		'itertools\CallbackIterator',
@@ -18,6 +19,7 @@ spl_autoload_register(function ($class) {
 		'itertools\IterUtil',
 		'itertools\MapIterator',
 		'itertools\PdoIterator',
+		'itertools\Queue',
 		'itertools\RangeIterator',
 		'itertools\RepeatIterator',
 		'itertools\SliceIterator',
