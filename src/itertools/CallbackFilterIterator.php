@@ -2,9 +2,9 @@
 
 namespace itertools;
 
+use InvalidArgumentException;
 use FilterIterator;
 use Iterator;
-use Closure;
 
 
 /** For PHP 5.3 */
@@ -12,9 +12,12 @@ class CallbackFilterIterator extends FilterIterator
 {
 	protected $callback;
 
-	public function __construct(Iterator $iterator, Closure $callback = null)
+	public function __construct($iterator, $callback)
 	{
-		parent::__construct($iterator);
+		parent::__construct(IterUtil::asIterator($iterator));
+		if(!is_callable($callback)) {
+			throw new InvalidArgumentException('No valid callback provided');
+		}
 		$this->callback = $callback;
 	}
 
