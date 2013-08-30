@@ -48,5 +48,22 @@ class GroupByIteratorTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals('lotte', $inputArray[2][0]->name);
 		$this->assertEquals('jaak', $inputArray[2][1]->name);
 	}
+
+	/** @test */
+	public function testSkippingGroups()
+	{
+		$input = new GroupByIterator(array(0, 0, 1, 1, 2, 3));
+		foreach($input as $i => $group) {
+			switch($i) {
+				case 1:
+					$this->assertEquals(array(1, 1), iterator_to_array($group, false));
+					break;
+
+				case 3:
+					$this->assertEquals(array(3), iterator_to_array($group, false));
+					break;
+			}
+		}
+	}
 }
 

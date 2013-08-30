@@ -15,23 +15,29 @@ class CurrentCachedIterator extends IteratorIterator
 	public function __construct($innerIterator)
 	{
 		parent::__construct(IterUtil::asIterator($innerIterator));
-	}
-
-	public function invalidateCache() {
 		$this->currentUpToDate = false;
 		$this->validUpToDate = false;
 	}
 
-    public function rewind() {
+	public function invalidateCache()
+	{
+		$this->currentUpToDate = false;
+		$this->validUpToDate = false;
+	}
+
+    public function rewind()
+	{
 		$this->invalidateCache();
 		return parent::rewind();
     }
 
-	public function uncachedCurrent() {
+	public function uncachedCurrent()
+	{
 		return parent::current();
 	}
 
-    public function current() {
+    public function current()
+	{
 		if(!$this->currentUpToDate) {
 			$this->cachedCurrent = $this->uncachedCurrent();
 			$this->currentUpToDate = true;
@@ -39,16 +45,19 @@ class CurrentCachedIterator extends IteratorIterator
         return $this->cachedCurrent;
     }
 
-    public function next() {
+    public function next()
+	{
 		$this->invalidateCache();
 		return parent::next();
     }
 
-	public function uncachedValid() {
+	public function uncachedValid()
+	{
 		return parent::valid();
 	}
 
-    public function valid() {
+    public function valid()
+	{
 		if($this->validUpToDate) {
 			return $this->cachedValid;
 		}
