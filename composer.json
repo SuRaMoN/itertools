@@ -13,7 +13,7 @@
 	],
 	"require": { "php": ">=5.3" },
 	"autoload": {
-		"files": [ "src/itertools/autoload.php" ]
+		"psr-0": { "itertools\\": "src/" }
 	}
 }
 
