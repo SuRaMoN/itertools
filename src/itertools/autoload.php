@@ -15,6 +15,7 @@ spl_autoload_register(function ($class) {
 		'itertools\FileCsvIterator',
 		'itertools\FileLineIterator',
 		'itertools\ForkingIterator',
+		'itertools\GroupByIterator',
 		'itertools\HistoryIterator',
 		'itertools\IterUtil',
 		'itertools\LockingIterator',

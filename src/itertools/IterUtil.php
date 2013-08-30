@@ -55,10 +55,28 @@ class IterUtil
 		}
 	}
 
+	public static function recursive_iterator_to_array(Iterator $iterator, $useKeys = true)
+	{
+		$resultArray = array();
+		$index = 0;
+		foreach($iterator as $key => $element) {
+			if(!$useKeys) {
+				$key = $index;
+			}
+			if($element instanceof Iterator) {
+				$resultArray[$key] = self::recursive_iterator_to_array($element, $useKeys);
+			} else {
+				$resultArray[$key] = $element;
+			}
+			$index += 1;
+		}
+		return $resultArray;
+	}
+
 	public static function assertIsCollection($value)
 	{
 		if(!self::isCollection($value)) {
-			throw new Exception('The provided argument is not a collection: ' . (is_object($iterable) ? get_class($value) : gettype($value)));
+			throw new Exception('The provided argument is not a collection: ' . (is_object($value) ? get_class($value) : gettype($value)));
 		}
 	}
 

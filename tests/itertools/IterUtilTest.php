@@ -88,7 +88,7 @@ class IterUtilTest extends PHPUnit_Framework_TestCase
 		next($a);
 		$this->assertEquals(1, current($a));
 		next($a);
-		$c = IterUtil::getCurrentAndAdvance($a);
+		IterUtil::getCurrentAndAdvance($a);
 	}
 
 	/** @test */
@@ -126,7 +126,7 @@ class IterUtilTest extends PHPUnit_Framework_TestCase
 		$a->next();
 		$this->assertEquals(1, $a->current());
 		$a->next();
-		$c = IterUtil::getCurrentAndAdvance($a);
+		IterUtil::getCurrentAndAdvance($a);
 	}
 
 	/** @test */
@@ -141,5 +141,12 @@ class IterUtilTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($c, 'default-value');
 	}
 
+	/** @test */
+	public function testResursiveIteratorToArray()
+	{
+		$iterator = new ArrayIterator(array(new ArrayIterator(range(0, 2)), new ArrayIterator(range(0, 2))));
+		$expectedResult = array(range(0, 2), range(0, 2));
+		$this->assertEquals($expectedResult, IterUtil::recursive_iterator_to_array($iterator));
+	}
 }
 
