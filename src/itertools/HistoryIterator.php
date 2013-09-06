@@ -3,7 +3,6 @@
 namespace itertools;
 
 use IteratorIterator;
-use SplQueue;
 
 
 /**

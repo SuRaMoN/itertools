@@ -50,6 +50,11 @@ class Queue implements ArrayAccess, Countable, IteratorAggregate
 		return $this->data->getSize();
 	}
 
+	public function isEmpty()
+	{
+		return 0 == $this->size;
+	}
+
 	public function count()
 	{
 		return $this->size;
