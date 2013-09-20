@@ -78,7 +78,7 @@ class ComposingIterator extends ReferencingIterator
 		}
 	}
 
-	public function pushIteratorByClassName($name, $arguments)
+	protected function pushIteratorByClassName($name, $arguments)
 	{
 		$iteratorClassName = __NAMESPACE__ . '\\' . ucfirst($name) . 'Iterator';
 		$reflector = new ReflectionClass($iteratorClassName);
