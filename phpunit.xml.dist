@@ -18,5 +18,11 @@
 			<directory suffix=".php">tests</directory>
         </testsuite>
     </testsuites>
+
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">src/itertools</directory>
+		</whitelist>
+	</filter>
 </phpunit>
 

@@ -6,18 +6,21 @@ use IteratorIterator;
 use ArrayIterator;
 
 
-class LockingIterator extends IteratorIterator {
+class LockingIterator extends IteratorIterator
+{
 	protected $lockFp;
 	protected $dir;
-	protected $locknameMapper;
+	protected $lockNameMapper;
 
-	public function __construct($inner, $dir, $locknameMapper = null) {
-		parent::__construct(is_array($inner) ? new ArrayIterator($inner) : $inner);
+	public function __construct($iterable, $dir, $lockNameMapper = null)
+	{
+		parent::__construct(IterUtil::asTraversable($iterable));
 		$this->dir = $dir;
-		$this->locknameMapper = $locknameMapper;
+		$this->lockNameMapper = $lockNameMapper;
 	}
 
-	protected function lock($name) {
+	protected function lock($name)
+	{
 		if(!is_dir($this->dir)) {
 			mkdir($this->dir, 0777, true);
 		}
@@ -25,21 +28,33 @@ class LockingIterator extends IteratorIterator {
 		flock($this->lockFp, LOCK_EX);
 	}
 
-	protected function unlock() {
+	protected function unlock()
+	{
 		flock($this->lockFp, LOCK_UN);
 		fclose($this->lockFp);
 		$this->lockFp = null;
 	}
 
-	public function current() {
+	public function current()
+	{
 		$current = parent::current();
 		if($this->lockFp === null) {
-			$this->lock(is_null($this->locknameMapper) ? $current : call_user_func($this->locknameMapper, $current));
+			$this->lock($this->getLockName($current));
 		}
 		return $current;
 	}
 
-	public function next() {
+	protected function getLockName($current)
+	{
+	    if(null === $this->lockNameMapper) {
+			return $current;
+		}
+		return call_user_func($this->lockNameMapper, $current);
+	}
+	
+
+	public function next()
+	{
 		if($this->lockFp !== null) {
 			$this->unlock();
 		}

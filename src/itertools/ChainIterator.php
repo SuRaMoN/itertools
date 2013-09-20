@@ -2,21 +2,26 @@
 
 namespace itertools;
 
-use Iterator;
+use OuterIterator;
 use Traversable;
 use EmptyIterator;
 use ArrayIterator;
 
 
-class ChainIterator implements Iterator
+class ChainIterator implements OuterIterator
 {
-	public $iterator;
-	public $currentSubIterator;
+	protected $iterator;
+	protected $currentSubIterator;
 
 	public function __construct($iterator)
 	{
 		$this->iterator = IterUtil::asIterator($iterator);
 		$this->currentSubIterator = new EmptyIterator();
+	}
+
+	public function getInnerIterator()
+	{
+		return $this->iterator;
 	}
 
 	public function setNextValidSubIterator()
@@ -51,7 +56,7 @@ class ChainIterator implements Iterator
     public function next()
 	{
 		$this->currentSubIterator->next();
-		if(!$this->currentSubIterator->valid()) {
+		if(! $this->currentSubIterator->valid()) {
 			$this->iterator->next();
 			$this->setNextValidSubIterator();
 		}

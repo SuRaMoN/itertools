@@ -23,7 +23,8 @@ class ComposingIteratorTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals(range(0, 3), $values);
 
 		$values = ComposingIterator::newInstance()
-			->repeat(1)
+			->source(new RepeatIterator(1))
+			->cacheCurrent()
 			->chunk(20)
 			->map(function($batch) { return array_slice($batch, 0, 10); })
 			->slice(0, 10)
@@ -33,6 +34,15 @@ class ComposingIteratorTest extends PHPUnit_Framework_TestCase
 			->takeWhile(function($v) { return 4 == $v[2]; })
 			->count();
 		$this->assertEquals(100, $values);
+	}
+
+	/**
+	 * @test
+	 * @expectedException BadMethodCallException
+	 */
+	public function testCallingUnknownMethods()
+	{
+		ComposingIterator::newInstance()->bliablabloe();
 	}
 }
 

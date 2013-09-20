@@ -2,9 +2,10 @@
 
 namespace itertools;
 
-use ReflectionClass;
+use BadMethodCallException;
 use EmptyIterator;
 use IteratorIterator;
+use ReflectionClass;
 
 
 class ComposingIterator extends ReferencingIterator
@@ -14,7 +15,7 @@ class ComposingIterator extends ReferencingIterator
 		'callbackFilter' => true,
 		'chain' => true,
 		'chunking' => true,
-		'furrentCached' => true,
+		'currentCached' => true,
 		'groupBy' => true,
 		'history' => true,
 		'lookAhead' => true,
@@ -67,16 +68,21 @@ class ComposingIterator extends ReferencingIterator
 
 	public function __call($name, $arguments)
 	{
-		$iteratorClassName = __NAMESPACE__ . '\\' . ucfirst($name) . 'Iterator';
-		$reflector = new ReflectionClass($iteratorClassName);
 		switch(true) {
 			case array_key_exists($name, self::$filters):
-				return $this->setInnerIterator($reflector->newInstanceArgs(
-					array_merge(array($this->getInnerIterator()), $arguments)
-				));
+				return $this->pushIteratorByClassName($name, array_merge(array($this->getInnerIterator()), $arguments));
 			case array_key_exists($name, self::$sources):
-				return $this->setInnerIterator($reflector->newInstanceArgs($arguments));
+				return $this->pushIteratorByClassName($name, $arguments);
+			default:
+				throw new BadMethodCallException('Call to unknown method: ' . __NAMESPACE__ . '\\' . __CLASS__ . '::' . $name);
 		}
+	}
+
+	public function pushIteratorByClassName($name, $arguments)
+	{
+		$iteratorClassName = __NAMESPACE__ . '\\' . ucfirst($name) . 'Iterator';
+		$reflector = new ReflectionClass($iteratorClassName);
+		return $this->setInnerIterator($reflector->newInstanceArgs($arguments));
 	}
 
 	public function chunk($chunkSize)
@@ -101,7 +107,7 @@ class ComposingIterator extends ReferencingIterator
 
 	public function source($iterable)
 	{
-		return $this->referencing();
+		return $this->referencing($iterable);
 	}
 }
  
