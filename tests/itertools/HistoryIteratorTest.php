@@ -8,7 +8,7 @@ use PHPUnit_Framework_TestCase;
 class HistoryIteratorTest extends PHPUnit_Framework_TestCase
 {
 	/** @test */
-	function testHistoryRetrieval()
+	public function testHistoryRetrieval()
 	{
 		$it = new HistoryIterator(array(1, 2, 3, 4), 3);
 
@@ -32,7 +32,7 @@ class HistoryIteratorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/** @test */
-	function testNormalFunctionality()
+	public function testNormalFunctionality()
 	{
 		$it = new HistoryIterator(array(1, 2, 3, 4));
 		$this->assertEquals(4, count(iterator_to_array($it)));

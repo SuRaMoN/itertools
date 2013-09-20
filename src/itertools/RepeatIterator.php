@@ -16,26 +16,26 @@ class RepeatIterator implements Iterator
 		$this->key = 0;
 	}
 
-    function rewind()
+    public function rewind()
 	{
     }
 
-    function current()
+    public function current()
 	{
         return $this->value;
     }
 
-    function key()
+    public function key()
 	{
 		return $this->key;
     }
 
-    function next()
+    public function next()
 	{
 		$this->key += 1;
     }
 
-    function valid()
+    public function valid()
 	{
         return true;
     }	
