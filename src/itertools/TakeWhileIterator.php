@@ -2,23 +2,25 @@
 
 namespace itertools;
 
-use Iterator;
+use IteratorIterator;
 
 
-class TakeWhileIterator extends CurrentCachedIterator {
-
+class TakeWhileIterator extends IteratorIterator
+{
 	protected $filter;
 
-	public function __construct($inner, $filter) {
-		parent::__construct($inner);
+	public function __construct($iterable, $filter)
+	{
+		parent::__construct(IterUtil::asTraversable($iterable));
 		$this->filter = $filter;
 	}
 
-	public function uncachedValid() {
-		if(!parent::uncachedValid()) {
+	public function valid()
+	{
+		if(!parent::valid()) {
 			return false;
 		}
-        return call_user_func($this->filter, $this->current());
+        return call_user_func($this->filter, $this->current(), $this->key());
     }
 }
 

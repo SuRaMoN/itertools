@@ -29,7 +29,7 @@ class MapIterator extends IteratorIterator
 
 	public function current()
 	{
-		return call_user_func($this->callback, parent::current());
+		return call_user_func($this->callback, parent::current(), parent::key(), $this->getInnerIterator());
 	}
 }
 

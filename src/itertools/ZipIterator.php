@@ -43,11 +43,9 @@ class ZipIterator implements Iterator
     public function rewind()
 	{
 		$this->iterationCount = 0;
-		$rewindStatuses = array();
 		foreach($this->iterators as $iterator) {
-			$rewindStatuses[] = $iterator->rewind();
+			$iterator->rewind();
 		}
-		return $rewindStatuses;
     }
 
     public function key()
@@ -66,11 +64,9 @@ class ZipIterator implements Iterator
 
     public function next()
 	{
-		$nextStatuses = array();
 		foreach($this->iterators as $iterator) {
-			$nextStatuses[] = $iterator->next();
+			$iterator->next();
 		}
-		return $nextStatuses;
     }
 
     public function valid()
