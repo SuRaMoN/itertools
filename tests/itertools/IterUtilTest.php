@@ -2,10 +2,10 @@
 
 namespace itertools;
 
+use ArrayIterator;
 use SimpleXMLElement;
 use IteratorIterator;
 use PHPUnit_Framework_TestCase;
-use ArrayIterator;
 
 
 class IterUtilTest extends PHPUnit_Framework_TestCase
@@ -147,6 +147,62 @@ class IterUtilTest extends PHPUnit_Framework_TestCase
 		$iterator = new ArrayIterator(array(new ArrayIterator(range(0, 2)), new ArrayIterator(range(0, 2))));
 		$expectedResult = array(range(0, 2), range(0, 2));
 		$this->assertEquals($expectedResult, IterUtil::recursive_iterator_to_array($iterator));
+	}
+
+	/** @test */
+	public function testAll()
+	{
+		$testValue = IterUtil::all(array(true, true, true));
+		$this->assertTrue($testValue);
+
+		$testValue = IterUtil::all(array(true, true, false));
+		$this->assertFalse($testValue);
+
+		$testValue = IterUtil::all(new ArrayIterator(array(5, 5, 5)), function($v) { return $v == 5; });
+		$this->assertTrue($testValue);
+
+		$testValue = IterUtil::all(new ArrayIterator(array(5, 5, 6)), function($v) { return $v == 5; });
+		$this->assertFalse($testValue);
+
+		$testValue = IterUtil::all(array());
+		$this->assertTrue($testValue);
+	}
+
+	/** @test */
+	public function testAny()
+	{
+		$testValue = IterUtil::any(array(false, false, false));
+		$this->assertFalse($testValue);
+
+		$testValue = IterUtil::any(array(true, false, false));
+		$this->assertTrue($testValue);
+
+		$testValue = IterUtil::any(new ArrayIterator(array(6, 6, 6)), function($v) { return $v == 5; });
+		$this->assertFalse($testValue);
+
+		$testValue = IterUtil::any(new ArrayIterator(array(5, 6, 6)), function($v) { return $v == 5; });
+		$this->assertTrue($testValue);
+
+		$testValue = IterUtil::any(array());
+		$this->assertFalse($testValue);
+	}
+
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 **/
+	public function testAnyShouldThrowExceptionIfSuppliedWithInvalidCallable()
+	{
+		IterUtil::any(array(), 66);
+	}
+
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 **/
+	public function testAllShouldThrowExceptionIfSuppliedWithInvalidCallable()
+	{
+		IterUtil::all(array(), 66);
 	}
 }
 

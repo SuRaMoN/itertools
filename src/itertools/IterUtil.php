@@ -55,6 +55,70 @@ class IterUtil
 		}
 	}
 
+	public static function any($iterable, $callable = null)
+	{
+		if(null !== $callable && ! is_callable($callable)) {
+			throw new InvalidArgumentException('No valid callable is supplied');
+		}
+		if(null === $callable) {
+			return self::anyWithoutCallable($iterable);
+		} else {
+			return self::anyWithCallable($iterable, $callable);
+		}
+	}
+
+	protected static function anyWithoutCallable($iterable)
+	{
+		foreach($iterable as $element) {
+			if($element) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	protected static function anyWithCallable($iterable, $callable)
+	{
+		foreach($iterable as $element) {
+			if(call_user_func($callable, $element)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static function all($iterable, $callable = null)
+	{
+		if(null !== $callable && ! is_callable($callable)) {
+			throw new InvalidArgumentException('No valid callable is supplied');
+		}
+		if(null === $callable) {
+			return self::allWithoutCallable($iterable);
+		} else {
+			return self::allWithCallable($iterable, $callable);
+		}
+	}
+
+	protected static function allWithoutCallable($iterable)
+	{
+		foreach($iterable as $element) {
+			if(! $element) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	protected static function allWithCallable($iterable, $callable)
+	{
+		foreach($iterable as $element) {
+			if(! call_user_func($callable, $element)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public static function recursive_iterator_to_array(Iterator $iterator, $useKeys = true)
 	{
 		$resultArray = array();
