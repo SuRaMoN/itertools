@@ -21,6 +21,7 @@ class ComposingIterator extends ReferencingIterator
 		'lookAhead' => true,
 		'map' => true,
 		'slice' => true,
+		'stopwatch' => true,
 		'takeWhile' => true,
 		'unique' => true,
 	);
@@ -107,7 +108,7 @@ class ComposingIterator extends ReferencingIterator
 
 	public function source($iterable)
 	{
-		return $this->referencing($iterable);
+		return $this->setInnerIterator($iterable);
 	}
 }
  

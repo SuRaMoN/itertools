@@ -40,7 +40,7 @@ class FileCsvIterator extends AbstractCsvIterator
 
 	public function __destruct()
 	{
-		if($this->fileHandle !== null && $this->closeFileHandleOnDestruct) {
+		if(null !== $this->fileHandle && $this->closeFileHandleOnDestruct) {
 			fclose($this->fileHandle);
 			$this->fileHandle = null;
 		}

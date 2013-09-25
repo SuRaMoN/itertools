@@ -28,6 +28,7 @@ spl_autoload_register(function ($class) {
 		'itertools\ReferencingIterator',
 		'itertools\RepeatIterator',
 		'itertools\SliceIterator',
+		'itertools\StopwatchIterator',
 		'itertools\StringCsvIterator',
 		'itertools\TakeWhileIterator',
 		'itertools\UniqueIterator',
