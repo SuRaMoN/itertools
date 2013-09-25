@@ -22,7 +22,7 @@ class ForkingIterator extends IteratorIterator
 	{
 		parent::__construct(IterUtil::asTraversable($innerIterator));
 		$this->forkingEnabled = array_key_exists('forkingEnabled', $options) ? $options['forkingEnabled'] : self::ENABLED;
-		$this->maxChildren = array_key_exists('maxChildren', $options) ? $options['maxChildren'] : PHP_INT_MAX;
+		$this->maxChildren = array_key_exists('maxChildren', $options) ? $options['maxChildren'] : 8;
 	}
 
 	public static function supportsFork()
@@ -52,6 +52,7 @@ class ForkingIterator extends IteratorIterator
 	{
 		pcntl_wait($status);
 		$this->childCount -= 1;
+		return $status;
 	}
 
 	public function rewind()
@@ -61,18 +62,22 @@ class ForkingIterator extends IteratorIterator
 		}
 
 		parent::rewind();
+		$status = 0;
 		do {
 			if($this->fork() == self::IS_CHILD) {
 				return;
 			}
 			while($this->childCount >= $this->maxChildren) {
-				$this->wait();
+				$status |= $this->wait();
 			}
 			parent::next();
 		} while(parent::valid());
 
 		while($this->childCount > 0) {
-			$this->wait();
+			$status |= $this->wait();
+		}
+		if($status !== 0) {
+			throw new Exception('Child exited with non zero status');
 		}
 	}
 
