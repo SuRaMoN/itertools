@@ -13,7 +13,7 @@ class StopwatchIteratorTest extends PHPUnit_Framework_TestCase
 	{
 		$stopwatchIterator = new StopwatchIterator(new RangeIterator(0, 10));
 		$this->assertEquals(0, $stopwatchIterator->getElapsedTime());
-		$this->assertSame(NAN, $stopwatchIterator->getSpeed());
+		$this->assertTrue(is_nan($stopwatchIterator->getSpeed()));
 
 		$count = 0;
 		foreach($stopwatchIterator as $element) {
