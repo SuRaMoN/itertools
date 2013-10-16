@@ -2,19 +2,25 @@
 
 namespace itertools;
 
+use ArrayIterator;
+use EmptyIterator;
 use OuterIterator;
 use Traversable;
-use EmptyIterator;
-use ArrayIterator;
 
 
 class ChainIterator implements OuterIterator
 {
+	const DONT_USE_KEYS = 'DONT_USE_KEYS';
+	const USE_KEYS = 'USE_KEYS';
+
+	protected $useOriginalKeys;
 	protected $iterator;
 	protected $currentSubIterator;
+	protected $count;
 
-	public function __construct($iterator)
+	public function __construct($iterator, $useOriginalKeys = self::USE_KEYS)
 	{
+		$this->useOriginalKeys = $useOriginalKeys;
 		$this->iterator = IterUtil::asIterator($iterator);
 		$this->currentSubIterator = new EmptyIterator();
 	}
@@ -41,6 +47,7 @@ class ChainIterator implements OuterIterator
 	{
 		$this->iterator->rewind();
 		$this->setNextValidSubIterator();
+		$this->count = 0;
     }
 
     public function current()
@@ -50,7 +57,11 @@ class ChainIterator implements OuterIterator
 
     public function key()
 	{
-        return $this->currentSubIterator->key();
+		if($this->useOriginalKeys == self::DONT_USE_KEYS) {
+			return $this->count;
+		} else {
+			return $this->currentSubIterator->key();
+		}
     }
 
     public function next()
@@ -60,6 +71,7 @@ class ChainIterator implements OuterIterator
 			$this->iterator->next();
 			$this->setNextValidSubIterator();
 		}
+		$this->count += 1;
     }
 
     public function valid()
