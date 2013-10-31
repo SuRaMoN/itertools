@@ -4,6 +4,7 @@
 <phpunit
     backupGlobals               = "false"
     backupStaticAttributes      = "false"
+    bootstrap                   = "src/itertools/autoload.php"
     colors                      = "true"
     convertErrorsToExceptions   = "true"
     convertNoticesToExceptions  = "true"
@@ -11,7 +12,8 @@
     processIsolation            = "false"
     stopOnFailure               = "false"
     syntaxCheck                 = "false"
-    bootstrap                   = "src/itertools/autoload.php" >
+	verbose                     = "true"
+	>
 
     <testsuites>
         <testsuite name="main">
