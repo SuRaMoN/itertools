@@ -2,6 +2,7 @@
 
 namespace itertools;
 
+use Exception;
 use PDO;
 
 
@@ -11,9 +12,15 @@ class PdoIterator extends TakeWhileIterator
 	{
 		if(count($params) != 0) {
 			$pdoStatement = $pdo->prepare($query);
+			if(false === $pdoStatement) {
+				throw new Exception('Invalid query');
+			}
 			$pdoStatement->execute($params);
 		} else {
 			$pdoStatement = $pdo->query($query);
+		}
+		if(false === $pdoStatement) {
+			throw new Exception('Invalid query');
 		}
 		$pdoStatement->setFetchMode($fetchMode);
 		$it = new CallbackIterator(function() use ($pdoStatement) {
