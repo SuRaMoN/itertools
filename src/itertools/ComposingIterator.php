@@ -22,6 +22,7 @@ class ComposingIterator extends ReferencingIterator
 		'map' => true,
 		'slice' => true,
 		'stopwatch' => true,
+		'stringCsv' => true,
 		'takeWhile' => true,
 		'unique' => true,
 	);
@@ -33,7 +34,6 @@ class ComposingIterator extends ReferencingIterator
 		'range' => true,
 		'referencing' => true,
 		'repeat' => true,
-		'stringCsv' => true,
 		'zip' => true,
 	);
 
