@@ -16,6 +16,7 @@ class ComposingIterator extends ReferencingIterator
 		'chain' => true,
 		'chunking' => true,
 		'currentCached' => true,
+		'dropWhile' => true,
 		'groupBy' => true,
 		'history' => true,
 		'lookAhead' => true,

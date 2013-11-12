@@ -13,6 +13,7 @@ spl_autoload_register(function ($class) {
 		'itertools\ChunkingIterator',
 		'itertools\ComposingIterator',
 		'itertools\CurrentCachedIterator',
+		'itertools\DropWhileIterator',
 		'itertools\FileCsvIterator',
 		'itertools\FileLineIterator',
 		'itertools\ForkingIterator',
