@@ -4,6 +4,7 @@ spl_autoload_register(function ($class) {
 	$available_classes = array(
 		'itertools\AbstractCsvIterator',
 		'itertools\ArrayAccessIterator',
+		'itertools\AutoTransactionBatchIterator',
 		'itertools\CachingIterator',
 		'itertools\CallbackFilterIterator',
 		'itertools\CallbackIterator',
