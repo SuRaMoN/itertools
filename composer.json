@@ -1,10 +1,10 @@
 
 {
-	"name": "SuRaMoN/itertools",
+	"name": "suramon/itertools",
 	"description": "Iterators implemented in PHP, copy-pasted from Python",
 	"type": "library",
 	"homepage": "https://github.com/SuRaMoN/itertools",
-	"license": "MIT",
+	"license": "DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE",
 	"authors": [
 		{
 			"name": "SuRaMoN",
