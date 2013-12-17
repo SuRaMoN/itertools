@@ -21,8 +21,9 @@ class LockingIterator extends IteratorIterator
 
 	protected function lock($name)
 	{
-		if(!is_dir($this->dir)) {
-			mkdir($this->dir, 0777, true);
+		@mkdir($this->dir, 0777, true);
+		if(! is_dir($this->dir) || ! is_writable($this->dir)) {
+			throw new Exception('Could not create directory to store lock files');
 		}
 		$this->lockFp = fopen("{$this->dir}/$name", 'w+');
 		flock($this->lockFp, LOCK_EX);
