@@ -24,6 +24,7 @@ spl_autoload_register(function ($class) {
 		'itertools\LockingIterator',
 		'itertools\LookAheadIterator',
 		'itertools\MapIterator',
+		'itertools\PairIterator',
 		'itertools\PdoIterator',
 		'itertools\Queue',
 		'itertools\RangeIterator',
