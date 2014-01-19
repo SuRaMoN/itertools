@@ -2,8 +2,9 @@
 
 namespace itertools;
 
-use IteratorIterator;
 use ArrayIterator;
+use Exception;
+use IteratorIterator;
 
 
 class LockingIterator extends IteratorIterator
@@ -23,7 +24,7 @@ class LockingIterator extends IteratorIterator
 	{
 		@mkdir($this->dir, 0777, true);
 		if(! is_dir($this->dir) || ! is_writable($this->dir)) {
-			throw new Exception('Could not create directory to store lock files');
+			throw new Exception("Could not create directory '{$this->dir}' to store lock files");
 		}
 		$this->lockFp = fopen("{$this->dir}/$name", 'w+');
 		flock($this->lockFp, LOCK_EX);
