@@ -37,7 +37,7 @@ class TemplateToSubstringMapConverterTest extends PHPUnit_Framework_TestCase
 	public function testAll()
 	{
 		$converter = new TemplateToSubstringMapConverter();
-		$map = $converter->convert('a <b  > c ; d', array('c' => 'new-name'));
+		$map = $converter->convert('a <b  > c1; d', array('c1' => 'new-name'));
 		$this->assertEquals(0, $map['a']->getOffset());
 		$this->assertEquals(2, $map['a']->getLength());
 		$this->assertEquals(2, $map['b']->getOffset());

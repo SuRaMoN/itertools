@@ -13,7 +13,7 @@ class TemplateToSubstringMapConverter
 
 	public function convert($template, array $nameMap = array())
 	{
-		preg_match_all('/<[a-zA-Z_ -]+>|[a-zA-Z_-]+/', $template, $substrings, PREG_OFFSET_CAPTURE);
+		preg_match_all('/<[a-zA-Z0-9_ -]+>|[a-zA-Z0-9_-]+/', $template, $substrings, PREG_OFFSET_CAPTURE);
 		$map = array();
 		foreach($substrings[0] as $i => $substring) {
 			$name = trim($substring[0], '< >');
