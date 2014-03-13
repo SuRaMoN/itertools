@@ -19,7 +19,7 @@ class ForkingIteratorTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * @test
-	 * @expectedException Exception
+	 * @expectedException UnexpectedValueException
 	 * @expectedExceptionMessage Child exited with non zero status
 	 */
 	public function testExceptionHandling()

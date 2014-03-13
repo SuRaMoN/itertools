@@ -2,6 +2,7 @@
 
 namespace itertools;
 
+use UnexpectedValueException;
 use ArrayIterator;
 use Exception;
 use InvalidArgumentException;
@@ -140,7 +141,7 @@ class IterUtil
 	public static function assertIsCollection($value)
 	{
 		if(!self::isCollection($value)) {
-			throw new Exception('The provided argument is not a collection: ' . (is_object($value) ? get_class($value) : gettype($value)));
+			throw new UnexpectedValueException('The provided argument is not a collection: ' . (is_object($value) ? get_class($value) : gettype($value)));
 		}
 	}
 
@@ -160,7 +161,7 @@ class IterUtil
 			if(array_key_exists('default', $options)) {
 				return $options['default'];
 			} else {
-				throw new Exception('Error while advancing iterable');
+				throw new UnexpectedValueException('Error while advancing iterable');
 			}
 		}
 		return $current['value'];

@@ -102,6 +102,16 @@ class ComposingIterator extends ReferencingIterator
 		return $this->setInnerIterator(new ZipIterator(array_merge(array($this->getInnerIterator()), $iterables)));
 	}
 
+	public function fixedLengthFormattedStringFromTemplate($template, array $nameMap = array(), array $options = array())
+	{
+		return $this->setInnerIterator(FixedLengthFormattedStringIterator::newFromTemplate($this->getInnerIterator(), $template, $nameMap, $options));
+	}
+
+	public function skipFirst()
+	{
+		return $this->setInnerIterator(new SliceIterator($this->getInnerIterator(), 1));
+	}
+
 	public function cacheCurrent()
 	{
 		return $this->currentCached();

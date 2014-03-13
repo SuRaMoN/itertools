@@ -17,6 +17,7 @@ spl_autoload_register(function ($class) {
 		'itertools\DropWhileIterator',
 		'itertools\FileCsvIterator',
 		'itertools\FileLineIterator',
+		'itertools\FixedLengthFormattedStringIterator',
 		'itertools\ForkingIterator',
 		'itertools\GroupByIterator',
 		'itertools\HistoryIterator',
@@ -33,7 +34,9 @@ spl_autoload_register(function ($class) {
 		'itertools\SliceIterator',
 		'itertools\StopwatchIterator',
 		'itertools\StringCsvIterator',
+		'itertools\SubstringLocation',
 		'itertools\TakeWhileIterator',
+		'itertools\TemplateToSubstringMapConverter',
 		'itertools\UniqueIterator',
 		'itertools\ZipIterator',
 	);

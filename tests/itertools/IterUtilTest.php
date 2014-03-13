@@ -59,7 +59,7 @@ class IterUtilTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * @test
-	 * @expectedException Exception
+	 * @expectedException UnexpectedValueException
 	 */
 	public function testAssertIsCollectionForNonCollections()
 	{
@@ -79,7 +79,7 @@ class IterUtilTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * @test
-	 * @expectedException Exception
+	 * @expectedException UnexpectedValueException
 	 * @expectedExceptionMessage Error while advancing iterable
 	 **/
 	public function testGetCurrentAndAdvanceForArrayShouldThrowExceptionOnEndOfRange()
@@ -116,7 +116,7 @@ class IterUtilTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * @test
-	 * @expectedException Exception
+	 * @expectedException UnexpectedValueException
 	 * @expectedExceptionMessage Error while advancing iterable
 	 **/
 	public function testGetCurrentAndAdvanceForIteratorShouldThrowExceptionOnEndOfRange()

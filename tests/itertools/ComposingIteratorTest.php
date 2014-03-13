@@ -34,6 +34,22 @@ class ComposingIteratorTest extends PHPUnit_Framework_TestCase
 			->takeWhile(function($v) { return 4 == $v[2]; })
 			->count();
 		$this->assertEquals(100, $values);
+
+		$count = ComposingIterator::newInstance()
+			->source(array(1, 2, 3, 4))
+			->skipFirst()
+			->count();
+		$this->assertEquals(3, $count);
+
+		$values = ComposingIterator::newInstance()
+			->source(array(
+				'jos   , 5',
+				'piet  , 7',
+			))
+			->fixedLengthFormattedStringFromTemplate('name  , age')
+			->toArray();
+		$this->assertEquals('jos   ', $values[0]['name']);
+		$this->assertEquals('5', $values[0]['age']);
 	}
 
 	/**

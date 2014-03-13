@@ -2,7 +2,7 @@
 
 namespace itertools;
 
-use Exception;
+use UnexpectedValueException;
 use IteratorIterator;
 use ArrayIterator;
 
@@ -39,7 +39,7 @@ class ForkingIterator extends IteratorIterator
 	{
 		$pid = pcntl_fork();
 		if($pid == -1) {
-			throw new Exception('Could not fork');
+			throw new UnexpectedValueException('Could not fork');
 		}
 		if($pid == self::IS_CHILD) {
 			$this->isChild = true;
@@ -77,7 +77,7 @@ class ForkingIterator extends IteratorIterator
 			$status |= $this->wait();
 		}
 		if($status !== 0) {
-			throw new Exception('Child exited with non zero status');
+			throw new UnexpectedValueException('Child exited with non zero status');
 		}
 	}
 
