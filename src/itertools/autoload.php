@@ -14,6 +14,7 @@ spl_autoload_register(function ($class) {
 		'itertools\ChunkingIterator',
 		'itertools\ComposingIterator',
 		'itertools\CurrentCachedIterator',
+		'itertools\DateRangeIterator',
 		'itertools\DropWhileIterator',
 		'itertools\FileCsvIterator',
 		'itertools\FileLineIterator',
