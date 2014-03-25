@@ -3,6 +3,7 @@
 namespace itertools;
 
 use PHPUnit_Framework_TestCase;
+use SplFileInfo;
 
 
 class FileCsvIteratorTest extends PHPUnit_Framework_TestCase
@@ -42,6 +43,13 @@ EOF
 
 		$data = iterator_to_array(new FileCsvIterator($fp));
 		$this->assertEquals(0, count($data));
+	}
+
+	/** @test */
+	public function testFileCsvIteratorFromSplFileInfo()
+	{
+		$data = iterator_to_array(new FileCsvIterator(new SplFileInfo(__DIR__ . '/testdata/testcsv.csv')));
+		$this->assertCount(2, $data);
 	}
 
 	/** @test */

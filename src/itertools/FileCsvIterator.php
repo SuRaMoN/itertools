@@ -3,6 +3,7 @@
 namespace itertools;
 
 use InvalidArgumentException;
+use SplFileInfo;
 
 
 class FileCsvIterator extends AbstractCsvIterator
@@ -16,6 +17,10 @@ class FileCsvIterator extends AbstractCsvIterator
 			'length' => 0,
 		);
 		$this->options = array_merge($defaultOptions, $options);
+
+		if($file instanceof SplFileInfo) {
+			$file = $file->getPathname();
+		}
 
 		if(is_resource($file)) {
 			$this->fileHandle = $file;
