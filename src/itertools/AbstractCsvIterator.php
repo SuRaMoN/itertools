@@ -15,9 +15,10 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 		$defaultOptions = array(
 			'delimiter' => ',',
 			'enclosure' => '"',
-			'escape'    => '\\',
+			'escape' => '\\',
 			'hasHeader' => true,
-			'header'    => null,
+			'header' => null,
+			'ignoreMissingRows' => false,
 		);
 
 		$unknownOptions = array_diff(array_keys($options), array_keys($defaultOptions));
@@ -50,9 +51,24 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 			return new EmptyIterator();
 		}
 		$nextRowRetriever = array($this, 'retrieveNextCsvRow');
-		return new CallbackIterator(function() use ($nextRowRetriever, $header) {
+		$options = $this->options;
+		return new CallbackIterator(function() use ($nextRowRetriever, $header, $options) {
 			$row = call_user_func($nextRowRetriever);
-			return $row === false ? false : array_combine($header, $row);
+			if(false === $row) {
+				return false;
+			}
+			if(count($header) == count($row)) {
+				return array_combine($header, $row);
+			}
+			if(! $options['ignoreMissingRows']) {
+				throw new InvalidArgumentException('You provided a csv with missing rows');
+			}
+			if(count($header) < count($row)) {
+				$row = array_slice($row, 0, count($header));
+			} else {
+				$row = array_merge($row, array_fill(0, count($header) - count($row), null));
+			}
+			return array_combine($header, $row);
 		});
 	}
 
