@@ -1,7 +1,4 @@
 
 {
-	"name": "suramon/itertools",
-		"psr-0": { "itertools": "src" }
-	}
 }
 
