@@ -120,6 +120,15 @@ class IterUtil
 		return true;
 	}
 
+	public static function iterator_reduce($iterable, $callable, $initial = null)
+	{
+		$returnValue = $initial;
+		foreach ($iterable as $element) {
+			$returnValue = $callable($initial, $element);
+		}
+		return $returnValue;
+	}
+
 	public static function recursive_iterator_to_array(Iterator $iterator, $useKeys = true)
 	{
 		$resultArray = array();
