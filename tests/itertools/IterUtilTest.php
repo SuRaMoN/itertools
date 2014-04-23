@@ -66,6 +66,12 @@ class IterUtilTest extends PHPUnit_Framework_TestCase
 		IterUtil::assertIsCollection(1);
 	}
 
+	public function testIteratorReduce()
+	{
+		$iterator = new RangeIterator(1, 2);
+		$this->assertEquals(3, IterUtil::iterator_reduce($iterator, function(&$carry, $element) { return $carry += $element;}));
+	}
+
 	/** @test */
 	public function testGetCurrentAndAdvanceForArray()
 	{
