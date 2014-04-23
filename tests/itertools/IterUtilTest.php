@@ -6,7 +6,7 @@ use ArrayIterator;
 use SimpleXMLElement;
 use IteratorIterator;
 use PHPUnit_Framework_TestCase;
-
+use stdClass;
 
 class IterUtilTest extends PHPUnit_Framework_TestCase
 {
@@ -68,8 +68,18 @@ class IterUtilTest extends PHPUnit_Framework_TestCase
 
 	public function testIteratorReduce()
 	{
-		$iterator = new RangeIterator(1, 2);
-		$this->assertEquals(3, IterUtil::iterator_reduce($iterator, function(&$carry, $element) { return $carry += $element;}));
+		$rangeIterator = new RangeIterator(1, 2);
+		$genericObject1 = new stdClass();
+		$genericObject1->test = 5;
+		$genericObject2 = new stdClass();
+		$genericObject2->test = 10;
+		$arrayIterator = new ArrayIterator(array($genericObject1, $genericObject2));
+
+		$this->assertEquals(3, IterUtil::iterator_reduce($rangeIterator, function(&$carry, $element) { return $carry += $element;}));
+		$this->assertEquals(5, IterUtil::iterator_reduce($rangeIterator, function(&$carry, $element) { return $carry += $element;}, 2));
+
+		$this->assertEquals(15, IterUtil::iterator_reduce($arrayIterator, function(&$carry, $element) { return $carry += $element->test;}));
+		$this->assertEquals(19, IterUtil::iterator_reduce($arrayIterator, function(&$carry, $element) { return $carry += $element->test;}, 4));
 	}
 
 	/** @test */

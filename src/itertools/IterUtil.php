@@ -120,11 +120,11 @@ class IterUtil
 		return true;
 	}
 
-	public static function iterator_reduce(Iterator $iterator, $callable)
+	public static function iterator_reduce($iterable, $callable, $initial = null)
 	{
 		$returnValue;
-		foreach ($iterator as $element) {
-			$callable($returnValue, $element);
+		foreach ($iterable as $element) {
+			$returnValue = $callable($initial, $element);
 		}
 		return $returnValue;
 	}
