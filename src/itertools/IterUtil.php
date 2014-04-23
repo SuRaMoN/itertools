@@ -122,7 +122,7 @@ class IterUtil
 
 	public static function iterator_reduce($iterable, $callable, $initial = null)
 	{
-		$returnValue;
+		$returnValue = $initial;
 		foreach ($iterable as $element) {
 			$returnValue = $callable($initial, $element);
 		}
