@@ -54,7 +54,7 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 		$options = $this->options;
 		return new CallbackIterator(function() use ($nextRowRetriever, $header, $options) {
 			$row = call_user_func($nextRowRetriever);
-			if(false === $row) {
+			if(false === $row || array(null) === $row) {
 				return false;
 			}
 			if(count($header) == count($row)) {
