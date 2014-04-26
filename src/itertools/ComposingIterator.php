@@ -32,6 +32,7 @@ class ComposingIterator extends ReferencingIterator
 		'fileCsv' => true,
 		'fileLine' => true,
 		'pdo' => true,
+		'processCsv' => true,
 		'range' => true,
 		'referencing' => true,
 		'repeat' => true,
