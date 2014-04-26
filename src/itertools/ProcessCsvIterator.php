@@ -22,11 +22,11 @@ class ProcessCsvIterator extends AbstractCsvIterator
 			'length' => 0,
 		);
 		$this->options = array_merge($defaultOptions, $options);
-		parent::__construct(array_diff_key($options, $defaultOptions));
 		$this->cmd = $cmd;
 		$this->cwd = $cwd;
 		$this->env = $env;
 		$this->otherOptions = $otherOptions;
+		parent::__construct(array_diff_key($options, $defaultOptions));
 	}
 
 	protected function ensureProcessStarted()
