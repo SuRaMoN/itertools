@@ -5,6 +5,7 @@ spl_autoload_register(function ($class) {
 		'itertools\AbstractCsvIterator',
 		'itertools\ArrayAccessIterator',
 		'itertools\AutoTransactionBatchIterator',
+		'itertools\BatchMapIterator',
 		'itertools\CachingIterator',
 		'itertools\CallbackFilterIterator',
 		'itertools\CallbackIterator',
