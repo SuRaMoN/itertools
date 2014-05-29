@@ -67,7 +67,7 @@ class StopwatchIterator extends IteratorIterator
 
 	protected function autoPrintSpeed()
 	{
-		if(date_create('now')->diff($this->previousPrintTime) > $this->options['printInterval']) {
+		if(date_create('now')->sub($this->options['printInterval']) < $this->previousPrintTime) {
 			return;
 		}
 		fputs($this->printToFileHandle, "Speed (iterations/microsecond): {$this->getFormattedSpeed()}, Elapsed time (microsecond): {$this->getFormattedElapsedTime()}\n");
