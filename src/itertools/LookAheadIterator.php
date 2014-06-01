@@ -40,7 +40,7 @@ class LookAheadIterator extends IteratorIterator
 		if(! $this->lookAheads->isEmpty()) {
 			return $this->lookAheads->bottom()->key;
 		}
-		return parent::current();
+		return parent::key();
 	}
 
 	public function current()
