@@ -19,6 +19,7 @@ class ComposingIterator extends ReferencingIterator
 		'dropWhile' => true,
 		'groupBy' => true,
 		'history' => true,
+		'innerExposing' => true,
 		'lookAhead' => true,
 		'map' => true,
 		'slice' => true,

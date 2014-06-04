@@ -23,6 +23,7 @@ spl_autoload_register(function ($class) {
 		'itertools\ForkingIterator',
 		'itertools\GroupByIterator',
 		'itertools\HistoryIterator',
+		'itertools\InnerExposingIterator',
 		'itertools\IterUtil',
 		'itertools\LockingIterator',
 		'itertools\LookAheadIterator',
