@@ -75,7 +75,7 @@ EOF
 EOF
 		);
 
-		$data = iterator_to_array(new FileCsvIterator($fp, array('hasHeader' => true, 'header' => array(1, 'bla'), 'ignoreFirstRow' => true)));
+		$data = iterator_to_array(new FileCsvIterator($fp, array('hasHeader' => true, 'header' => array(1, 'bla'))));
 		$this->assertEquals(1, count($data));
 		$this->assertEquals('a11', $data[0][1]);
 		$this->assertEquals('a12', $data[0]['bla']);

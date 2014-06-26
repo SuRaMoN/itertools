@@ -18,7 +18,6 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 			'escape' => '\\',
 			'hasHeader' => true,
 			'header' => null,
-			'ignoreFirstRow' => false,
 			'ignoreMissingRows' => false, // columns*
 		);
 
@@ -26,10 +25,13 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 		if(count($unknownOptions) != 0) {
 			throw new InvalidArgumentException('Unknown options specified: ' . implode(', ', $unknownOptions));
 		}
+		if (array_key_exists('header', $options) && null !== $options['header'] && ! array_key_exists('hasHeader', $options)) {
+			$options['hasHeader'] = false;
+		}
 
 		$this->options = array_merge($this->options, $defaultOptions, $options);
 
-		if($this->options['hasHeader']) {
+		if($this->options['hasHeader'] || null !== $this->options['header']) {
 			if(null === $this->options['header']) {
 				$it = $this->getLineIteratorWithHeaderInFirstLine();
 			} else {
@@ -53,7 +55,7 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 		}
 		$nextRowRetriever = array($this, 'retrieveNextCsvRow');
 		$options = $this->options;
-		if ($options['ignoreFirstRow']) {
+		if ($options['hasHeader'] && null !== $options['header']) {
             $this->retrieveNextCsvRow();
         }
 		return new CallbackIterator(function() use ($nextRowRetriever, $header, $options) {
