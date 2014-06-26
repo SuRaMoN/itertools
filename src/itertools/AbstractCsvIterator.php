@@ -18,7 +18,8 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 			'escape' => '\\',
 			'hasHeader' => true,
 			'header' => null,
-			'ignoreMissingRows' => false,
+			'ignoreFirstRow' => false,
+			'ignoreMissingRows' => false, // columns*
 		);
 
 		$unknownOptions = array_diff(array_keys($options), array_keys($defaultOptions));
@@ -52,6 +53,9 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 		}
 		$nextRowRetriever = array($this, 'retrieveNextCsvRow');
 		$options = $this->options;
+		if ($options['ignoreFirstRow']) {
+            $this->retrieveNextCsvRow();
+        }
 		return new CallbackIterator(function() use ($nextRowRetriever, $header, $options) {
 			$row = call_user_func($nextRowRetriever);
 			if(false === $row || array(null) === $row) {
