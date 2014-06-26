@@ -67,6 +67,21 @@ EOF
 	}
 
 	/** @test */
+	public function testFileCsvIteratorWithReplacedHeader()
+	{
+		$fp = $this->getMemoryFileHandle(<<<EOF
+"col1", "col2"
+"a11", "a12"
+EOF
+		);
+
+		$data = iterator_to_array(new FileCsvIterator($fp, array('hasHeader' => true, 'header' => array(1, 'bla'))));
+		$this->assertEquals(1, count($data));
+		$this->assertEquals('a11', $data[0][1]);
+		$this->assertEquals('a12', $data[0]['bla']);
+	}
+
+	/** @test */
 	public function testFileCsvIteratorWithEnclosureSameAsDelimiter()
 	{
 		$fp = $this->getMemoryFileHandle(<<<EOF
