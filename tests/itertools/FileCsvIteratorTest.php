@@ -132,6 +132,14 @@ EOF
 		new FileCsvIterator(__FILE__, array('unknownOption' => true));
 	}
 
+	/** @test */
+	public function testFileCsvWithCustomCharacterEncoding()
+	{
+		$data = iterator_to_array(new FileCsvIterator(__DIR__ . '/testdata/testcsv-latin1.csv', array('fromEncoding' => 'ISO-8859-1')));
+		$this->assertEquals("Josephin\xc3\xa8", $data[0]['name']);
+		$this->assertEquals("Albr\xc3\xa9ne", $data[1]['name']);
+	}
+
 	protected function getMemoryFileHandle($content)
 	{
 		$fp = fopen('php://memory', 'rw');

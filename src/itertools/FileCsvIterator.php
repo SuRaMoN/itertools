@@ -2,6 +2,7 @@
 
 namespace itertools;
 
+use Exception;
 use InvalidArgumentException;
 use SplFileInfo;
 
@@ -15,6 +16,7 @@ class FileCsvIterator extends AbstractCsvIterator
 	{
 		$defaultOptions = array(
 			'length' => 0,
+			'fromEncoding' => null,
 		);
 		$this->options = array_merge($defaultOptions, $options);
 
@@ -25,10 +27,16 @@ class FileCsvIterator extends AbstractCsvIterator
 		if(is_resource($file)) {
 			$this->fileHandle = $file;
 			$this->closeFileHandleOnDestruct = false;
+			if(null !== $this->options['fromEncoding']) {
+				throw new Exception('From encoding can only be speecified if constructed with file path');
+			}
 		} else if(is_string($file)) {
 			$this->fileHandle = @fopen($file, 'r');
 			if($this->fileHandle === false) {
 				throw new InvalidArgumentException("Could not open csv file with path: '$file'");
+			}
+			if(null !== $this->options['fromEncoding']) {
+				stream_filter_append($this->fileHandle, 'convert.iconv.' . $this->options['fromEncoding'] . '/UTF-8');
 			}
 			$this->closeFileHandleOnDestruct = true;
 		} else {
