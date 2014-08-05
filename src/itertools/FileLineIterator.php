@@ -2,8 +2,9 @@
 
 namespace itertools;
 
-use InvalidArgumentException;
 use EmptyIterator;
+use Exception;
+use InvalidArgumentException;
 
 
 class FileLineIterator extends TakeWhileIterator
@@ -15,6 +16,7 @@ class FileLineIterator extends TakeWhileIterator
 	{
 		$defaultOptions = array(
 			'includeWhitespace' => false,
+			'fromEncoding' => null,
 		);
 
 		$unknownOptions = array_diff(array_keys($options), array_keys($defaultOptions));
@@ -27,10 +29,16 @@ class FileLineIterator extends TakeWhileIterator
 		if(is_resource($file)) {
 			$this->fileHandle = $file;
 			$this->closeFileHandleOnDestruct = false;
+			if(null !== $options->fromEncoding) {
+				throw new Exception('Source encoding can only be specified if constructed with file path');
+			}
 		} else if(is_string($file)) {
 			$this->fileHandle = @fopen($file, 'r');
 			if($this->fileHandle === false) {
 				throw new InvalidArgumentException("Could not open file with path: '$file'");
+			}
+			if(null !== $options->fromEncoding) {
+				stream_filter_append($this->fileHandle, 'convert.iconv.' . $options->fromEncoding . '/UTF-8');
 			}
 			$this->closeFileHandleOnDestruct = true;
 
