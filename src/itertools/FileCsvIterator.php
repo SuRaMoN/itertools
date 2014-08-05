@@ -28,7 +28,7 @@ class FileCsvIterator extends AbstractCsvIterator
 			$this->fileHandle = $file;
 			$this->closeFileHandleOnDestruct = false;
 			if(null !== $this->options['fromEncoding']) {
-				throw new Exception('From encoding can only be speecified if constructed with file path');
+				throw new Exception('Source encoding can only be specified if constructed with file path');
 			}
 		} else if(is_string($file)) {
 			$this->fileHandle = @fopen($file, 'r');

@@ -62,6 +62,14 @@ EOF
 		new FileLineIterator(1);
 	}
 
+	/** @test */
+	public function testFileCsvWithCustomCharacterEncoding()
+	{
+		$data = iterator_to_array(new FileLineIterator(__DIR__ . '/testdata/testline-latin1.txt', array('fromEncoding' => 'ISO-8859-1')));
+		$this->assertEquals("Josephin\xc3\xa8", $data[0]);
+		$this->assertEquals("Albr\xc3\xa9ne", $data[1]);
+	}
+
 	protected function getMemoryFileHandle($content)
 	{
 		$fp = fopen('php://memory', 'rw');
