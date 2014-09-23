@@ -3,13 +3,28 @@
 namespace itertools;
 
 use ArrayIterator;
-use SimpleXMLElement;
 use IteratorIterator;
 use PHPUnit_Framework_TestCase;
+use SimpleXMLElement;
+use SplObjectStorage;
 use stdClass;
+
 
 class IterUtilTest extends PHPUnit_Framework_TestCase
 {
+	/** @test */
+	public function testInvoke()
+	{
+		$input = array(new SplObjectStorage(), new SplObjectStorage());
+		$this->assertEquals(array(0, 0), iterator_to_array(IterUtil::invoke($input, 'count')));
+	}
+
+	/** @test */
+	public function testSum()
+	{
+		$this->assertEquals(10, IterUtil::sum(array(1, 2, 3), 4));
+	}
+
 	/** @test */
 	public function testAsIterator()
 	{

@@ -120,6 +120,23 @@ class IterUtil
 		return true;
 	}
 
+	public static function invoke($iterable, $method)
+	{
+		return new MapIterator($iterable, function($element) use ($method) {
+			return $element->$method();
+		});
+	}
+
+	public static function sum($iterable, $initialValue = 0)
+	{
+		self::assertIsCollection($iterable);
+		$sum = $initialValue;
+		foreach($iterable as $element) {
+			$sum += $element;
+		}
+		return $sum;
+	}
+
 	public static function iterator_reduce($iterable, $callable, $initial = null)
 	{
 		$returnValue = $initial;
