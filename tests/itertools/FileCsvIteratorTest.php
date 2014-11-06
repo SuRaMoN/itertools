@@ -9,6 +9,24 @@ use SplFileInfo;
 class FileCsvIteratorTest extends PHPUnit_Framework_TestCase
 {
 	/** @test */
+	public function testFileCsvIteratorWithHeaderCombinedHeader()
+	{
+		$fp = $this->getMemoryFileHandle(<<<EOF
+"",     "cat1", "",     "cat2"
+"col1", "col2", "col3", "col4"
+"a11",  "a12",  "a13",  "a14"
+EOF
+		);
+
+		$data = iterator_to_array(new FileCsvIterator($fp, array('combineFirstNRowsAsHeader' => 2)));
+		$this->assertEquals(1, count($data));
+		$this->assertEquals('a11', $data[0]['col1']);
+		$this->assertEquals('a12', $data[0]['cat1 col2']);
+		$this->assertEquals('a13', $data[0]['cat1 col3']);
+		$this->assertEquals('a14', $data[0]['cat2 col4']);
+	}
+
+	/** @test */
 	public function testFileCsvIteratorWithHeader()
 	{
 		$fp = $this->getMemoryFileHandle(<<<EOF

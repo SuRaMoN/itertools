@@ -2,8 +2,9 @@
 
 namespace itertools;
 
-use InvalidArgumentException;
 use EmptyIterator;
+use Exception;
+use InvalidArgumentException;
 
 
 abstract class AbstractCsvIterator extends TakeWhileIterator
@@ -18,22 +19,27 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 			'escape' => '\\',
 			'hasHeader' => true,
 			'header' => null,
-			'ignoreMissingRows' => false, // columns*
+			'ignoreMissingRows' => false, // Deprecated: use ignoreMissingColumns
+			'ignoreMissingColumns' => false, // columns*
+			'combineFirstNRowsAsHeader' => 1,
 		);
 
 		$unknownOptions = array_diff(array_keys($options), array_keys($defaultOptions));
 		if(count($unknownOptions) != 0) {
 			throw new InvalidArgumentException('Unknown options specified: ' . implode(', ', $unknownOptions));
 		}
-		if (array_key_exists('header', $options) && null !== $options['header'] && ! array_key_exists('hasHeader', $options)) {
+		if(array_key_exists('header', $options) && null !== $options['header'] && ! array_key_exists('hasHeader', $options)) {
 			$options['hasHeader'] = false;
+		}
+		if(array_key_exists('ignoreMissingRows', $options)) {
+			$options['ignoreMissingColumns'] = $options['ignoreMissingRows'];
 		}
 
 		$this->options = array_merge($this->options, $defaultOptions, $options);
 
 		if($this->options['hasHeader'] || null !== $this->options['header']) {
 			if(null === $this->options['header']) {
-				$it = $this->getLineIteratorWithHeaderInFirstLine();
+				$it = $this->getLineIteratorWithHeaderInFirstLines();
 			} else {
 				$it = $this->getLineIteratorWithHeader($this->options['header']);
 			}
@@ -42,6 +48,8 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 		}
 		parent::__construct($it, function($r) { return $r !== false; });
 	}
+
+	abstract public function retrieveNextCsvRow();
 
 	protected function getLineIteratorWithoutHeader()
 	{
@@ -66,7 +74,7 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 			if(count($header) == count($row)) {
 				return array_combine($header, $row);
 			}
-			if(! $options['ignoreMissingRows']) {
+			if(! $options['ignoreMissingColumns']) {
 				throw new InvalidArgumentException('You provided a csv with missing rows');
 			}
 			if(count($header) < count($row)) {
@@ -78,12 +86,36 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 		});
 	}
 
-	protected function getLineIteratorWithHeaderInFirstLine()
+	protected function getLineIteratorWithHeaderInFirstLines()
 	{
-		$header = $this->retrieveNextCsvRow();
-		return $this->getLineIteratorWithHeader($header);
+		$headers = array_map(array($this, 'retrieveNextCsvRow'), range(1, $this->options['combineFirstNRowsAsHeader']));
+		$combinedHeader = null;
+		foreach($headers as $header) {
+			if(false === $header || null === $header) {
+				return new EmptyIterator();
+			}
+			if(null === $combinedHeader) {
+				$combinedHeader = array_fill_keys(array_keys($header), '');
+			}
+			$previousNonEmtpyColumnTitle = '';
+			foreach($header as $i => $columnTitle) {
+				if(! array_key_exists($i, $header)) {
+					if(! $this->options['ignoreMissingColumns']) {
+						throw new InvalidArgumentException('You provided a csv with missing rows');
+					} else {
+						continue;
+					}
+				}
+				$combinedHeader[$i] .= ('' == trim($combinedHeader[$i]) ? '' : ' ') . ('' == trim($columnTitle) ? $previousNonEmtpyColumnTitle : $columnTitle);
+				if('' != trim($columnTitle)) {
+					$previousNonEmtpyColumnTitle = $columnTitle;
+				}
+			}
+		}
+		if(null === $combinedHeader) {
+			throw new Exception('Unable to get header');
+		}
+		return $this->getLineIteratorWithHeader($combinedHeader);
 	}
-
-	abstract public function retrieveNextCsvRow();
 }
 
