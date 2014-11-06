@@ -11,6 +11,7 @@ class FileCsvIterator extends AbstractCsvIterator
 {
 	protected $fileHandle;
 	protected $closeFileHandleOnDestruct;
+	protected $guzzleStream;
 
 	public function __construct($file, array $options = array())
 	{
@@ -22,6 +23,11 @@ class FileCsvIterator extends AbstractCsvIterator
 
 		if($file instanceof SplFileInfo) {
 			$file = $file->getPathname();
+		}
+
+		if($file instanceof \Guzzle\Stream\StreamInterface) {
+			$this->guzzleStream = $file;
+			$file = $file->getStream();
 		}
 
 		if(is_resource($file)) {

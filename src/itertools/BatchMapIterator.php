@@ -98,7 +98,7 @@ class BatchMapIterator extends IteratorIterator
 
     public function valid()
 	{
-		if(null === key($this->batch)) {
+		while(null === key($this->batch) && $this->getInnerIterator()->valid()) {
 			$this->ensureBatchPresent();
 		}
         return null !== key($this->batch);
