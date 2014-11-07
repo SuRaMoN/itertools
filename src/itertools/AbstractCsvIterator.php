@@ -115,6 +115,14 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 		if(null === $combinedHeader) {
 			throw new Exception('Unable to get header');
 		}
+		// make columns unique (double columns become empty)
+		$previousColumns = array();
+		foreach($combinedHeader as & $name) {
+			if(array_key_exists($name, $previousColumns)) {
+				$name = '';
+			}
+			$previousColumns[$name] = '';
+		}
 		return $this->getLineIteratorWithHeader($combinedHeader);
 	}
 }
