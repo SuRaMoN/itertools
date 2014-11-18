@@ -106,7 +106,9 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 						continue;
 					}
 				}
-				$combinedHeader[$i] .= ('' == trim($combinedHeader[$i]) ? '' : ' ') . ('' == trim($columnTitle) ? $previousNonEmtpyColumnTitle : $columnTitle);
+				$combinedHeader[$i] .=
+					('' == trim($combinedHeader[$i]) || '' == trim($columnTitle) ? '' : ' ') .
+					('' == trim($columnTitle) ? $previousNonEmtpyColumnTitle : $columnTitle);
 				if('' != trim($columnTitle)) {
 					$previousNonEmtpyColumnTitle = $columnTitle;
 				}
