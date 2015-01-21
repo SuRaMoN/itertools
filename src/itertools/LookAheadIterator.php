@@ -97,6 +97,7 @@ class LookAheadIterator extends IteratorIterator
 		if(! $this->skipAutoRewind) {
 			parent::rewind();
 			$this->skipNextNormalRewind = true;
+			$this->skipAutoRewind = true;
 		}
 	}
 }
