@@ -10,6 +10,13 @@ use ReflectionClass;
 
 class ComposingIterator extends ReferencingIterator
 {
+	protected static $externalFilters = array(
+	);
+
+	protected static $externalSources = array(
+		'glob' => true,
+	);
+
 	protected static $filters = array(
 		'caching' => true,
 		'callbackFilter' => true,
@@ -73,10 +80,18 @@ class ComposingIterator extends ReferencingIterator
 	public function __call($name, $arguments)
 	{
 		switch(true) {
+			case array_key_exists($name, self::$externalFilters):
+				return $this->pushIteratorByClassName(ucfirst($name) . 'Iterator', array_merge(array($this->getInnerIterator()), $arguments));
+
 			case array_key_exists($name, self::$filters):
-				return $this->pushIteratorByClassName($name, array_merge(array($this->getInnerIterator()), $arguments));
+				return $this->pushIteratorByClassName(__NAMESPACE__ . '\\' . ucfirst($name) . 'Iterator', array_merge(array($this->getInnerIterator()), $arguments));
+
+			case array_key_exists($name, self::$externalSources):
+				return $this->pushIteratorByClassName(ucfirst($name) . 'Iterator', $arguments);
+
 			case array_key_exists($name, self::$sources):
-				return $this->pushIteratorByClassName($name, $arguments);
+				return $this->pushIteratorByClassName(__NAMESPACE__ . '\\' . ucfirst($name) . 'Iterator', $arguments);
+
 			default:
 				throw new BadMethodCallException('Call to unknown method: ' . __NAMESPACE__ . '\\' . __CLASS__ . '::' . $name);
 		}
@@ -84,8 +99,7 @@ class ComposingIterator extends ReferencingIterator
 
 	protected function pushIteratorByClassName($name, $arguments)
 	{
-		$iteratorClassName = __NAMESPACE__ . '\\' . ucfirst($name) . 'Iterator';
-		$reflector = new ReflectionClass($iteratorClassName);
+		$reflector = new ReflectionClass($name);
 		return $this->setInnerIterator($reflector->newInstanceArgs($arguments));
 	}
 
@@ -117,6 +131,11 @@ class ComposingIterator extends ReferencingIterator
 	public function cacheCurrent()
 	{
 		return $this->currentCached();
+	}
+
+	public function invoke($method)
+	{
+		return $this->map(function($object) use ($method) { return $object->$method(); });
 	}
 
 	public function source($iterable)

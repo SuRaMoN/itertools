@@ -11,6 +11,14 @@ class LookAheadIterator extends IteratorIterator
 	protected $skipAutoRewind;
 	protected $skipNextNormalRewind;
 
+	public static function newInstance($innerIterator)
+	{
+		if($innerIterator instanceof self) {
+			return $innerIterator;
+		}
+		return new self($innerIterator);
+	}
+
 	public function __construct($innerIterator)
 	{
 		parent::__construct(IterUtil::asIterator($innerIterator));
