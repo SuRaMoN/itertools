@@ -2,6 +2,7 @@
 
 namespace itertools;
 
+use Exception;
 use PHPUnit_Framework_TestCase;
 
 
@@ -93,5 +94,27 @@ class AutoTransactionBatchIteratorTest extends PHPUnit_Framework_TestCase
 			}
 		}
 		$this->assertEquals(array(3, 3), array($beginTransactionCount, $commitCount));
+	}
+
+	/** @test */
+	public function testExceptionInForeach()
+	{
+		$beginTransactionCount = 0;
+		$commitCount = 0;
+		$rollBackCount = 0;
+		$pdo = new MockPDO(array(
+			'beginTransaction' => function() use (&$beginTransactionCount) { $beginTransactionCount += 1; },
+			'commit' => function() use (&$commitCount) { $commitCount += 1; },
+			'rollBack' => function() use (&$rollBackCount) { $rollBackCount += 1; },
+		));
+
+		try {
+			foreach(new AutoTransactionBatchIterator(range(0, 4), $pdo) as $i) {
+				throw new Exception();
+			}
+		} catch (Exception $e) {
+		}
+		$this->assertEquals(1, $rollBackCount);
+		$this->assertEquals($commitCount + $rollBackCount, $beginTransactionCount);
 	}
 }

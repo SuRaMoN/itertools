@@ -21,6 +21,11 @@ class MockPDO extends PDO
 		}
 	}
 
+	public function rollBack()
+	{
+		$this->triggerCallback(__FUNCTION__);
+	}
+
 	public function beginTransaction()
 	{
 		$this->triggerCallback(__FUNCTION__);

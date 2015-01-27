@@ -2,6 +2,7 @@
 
 namespace itertools;
 
+use Exception;
 use IteratorIterator;
 use itertools\IterUtil;
 use PDO;
@@ -27,16 +28,12 @@ class AutoTransactionBatchIterator extends IteratorIterator
 	{
 		$valid = parent::valid();
 		if(! $valid) {
-			if($this->inTransaction) {
-				$this->inTransaction = false;
-				$this->pdo->commit();
-			}
+			$this->commitIfInTransaction();
 			return false;
 		}
 		if($this->currentStep >= $this->batchSize) {
-			$this->inTransaction = false;
 			$this->currentStep = self::START_TRANSACTION;
-			$this->pdo->commit();
+			$this->commitIfInTransaction();
 		}
 		if(self::START_TRANSACTION == $this->currentStep) {
 			$this->pdo->beginTransaction();
@@ -46,10 +43,34 @@ class AutoTransactionBatchIterator extends IteratorIterator
 		return true;
 	}
 
+	public function commitIfInTransaction()
+	{
+		if(! $this->inTransaction) {
+			return;
+		}
+		try {
+			$this->pdo->commit();
+			$this->inTransaction = false;
+		} catch(Exception $e) {
+			$this->pdo->rollBack();
+			$this->inTransaction = false;
+			throw $e;
+		}
+	}
+
 	public function next()
 	{
 		$this->currentStep += 1;
 		parent::next();
+	}
+
+	public function __destruct()
+	{
+		if(! $this->inTransaction) {
+			return;
+		}
+		// this can only be destructed in transaction if exception occured
+		$this->pdo->rollBack();
 	}
 }
 
