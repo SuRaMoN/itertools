@@ -70,7 +70,7 @@ class StopwatchIterator extends IteratorIterator
 		if(date_create('now')->sub($this->options['printInterval']) < $this->previousPrintTime) {
 			return;
 		}
-		fputs($this->printToFileHandle, "Speed (iterations/microsecond): {$this->getFormattedSpeed()}, Elapsed time (microsecond): {$this->getFormattedElapsedTime()}\n");
+		fputs($this->printToFileHandle, "Speed (iterations/second): {$this->getFormattedSpeed()}, Elapsed time (second): {$this->getFormattedElapsedTime()}\n");
 		$this->previousPrintTime = new DateTime('now');
 	}
 	
