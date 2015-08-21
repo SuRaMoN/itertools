@@ -6,7 +6,6 @@ use OutOfBoundsException;
 use Countable;
 use ArrayAccess;
 use IteratorAggregate;
-use SplFixedArray;
 
 
 /**
@@ -33,7 +32,7 @@ class Queue implements ArrayAccess, Countable, IteratorAggregate
 	public function __construct($collection = array())
 	{
 		IterUtil::assertIsCollection($collection);
-		$this->data = new SplFixedArray(1);
+		$this->data = array_fill(0, 1, null);
 		$this->size = 0;
 		$this->headIndex = 0;
 		$this->tailIndex = 0;
@@ -47,7 +46,7 @@ class Queue implements ArrayAccess, Countable, IteratorAggregate
 
 	public function getMemoryUsageDataStructure()
 	{
-		return $this->data->getSize();
+		return count($this->data);
 	}
 
 	public function isEmpty()
@@ -82,7 +81,7 @@ class Queue implements ArrayAccess, Countable, IteratorAggregate
 
 	protected function doubleDataSize()
 	{
-		$newData = new SplFixedArray($this->data->getSize() * 2);
+		$newData = array_fill(0, count($this->data) * 2, null);
 		foreach($this as $i => $element) {
 			$newData[$i] = $element;
 		}
@@ -93,7 +92,7 @@ class Queue implements ArrayAccess, Countable, IteratorAggregate
 
 	protected function doubleDataSizeIfFull()
 	{
-		if($this->size == $this->data->count()) {
+		if($this->size == count($this->data)) {
 			$this->doubleDataSize();
 		}
 	}
@@ -112,14 +111,14 @@ class Queue implements ArrayAccess, Countable, IteratorAggregate
 		$this->doubleDataSizeIfFull();
 		$this->data[$this->tailIndex] = $value;
 		$this->size += 1;
-		$this->tailIndex = ($this->tailIndex + 1) % $this->data->count();
+		$this->tailIndex = ($this->tailIndex + 1) % count($this->data);
 		return $this;
 	}
 
 	public function pop()
 	{
 		$oldValue = $this->offsetGet($this->size - 1);
-		$this->tailIndex = ($this->tailIndex + $this->data->getSize() - 1) % $this->data->getSize();
+		$this->tailIndex = ($this->tailIndex + count($this->data) - 1) % count($this->data);
 		$this->size -= 1;
 		return $oldValue;
 	}
@@ -141,7 +140,7 @@ class Queue implements ArrayAccess, Countable, IteratorAggregate
 	public function unshift($value)
 	{
 		$this->doubleDataSizeIfFull();
-		$newHeadIndex = ($this->headIndex + $this->data->count() - 1) % $this->data->count();
+		$newHeadIndex = ($this->headIndex + count($this->data) - 1) % count($this->data);
 		$this->data[$newHeadIndex] = $value;
 		$this->size += 1;
 		$this->headIndex = $newHeadIndex;
@@ -151,7 +150,7 @@ class Queue implements ArrayAccess, Countable, IteratorAggregate
 	public function shift()
 	{
 		$oldValue = $this->offsetGet(0);
-		$this->headIndex = ($this->headIndex + 1) % $this->data->count();
+		$this->headIndex = ($this->headIndex + 1) % count($this->data);
 		$this->size -= 1;
 		return $oldValue;
 	}
@@ -171,7 +170,7 @@ class Queue implements ArrayAccess, Countable, IteratorAggregate
 	public function offsetGet($offset)
 	{
 		$this->assertOffsetExists($offset);
-		return $this->data[($this->headIndex + $offset) % $this->data->count()];
+		return $this->data[($this->headIndex + $offset) % count($this->data)];
 	}
 
 	public function offsetSet($offset, $value)
@@ -180,7 +179,7 @@ class Queue implements ArrayAccess, Countable, IteratorAggregate
 			return $this->push($value);
 		}
 		$this->assertOffsetExists($offset);
-		$this->data[($this->headIndex + $offset) % $this->data->count()] = $value;
+		$this->data[($this->headIndex + $offset) % count($this->data)] = $value;
 		return $this;
 	}
 
@@ -193,7 +192,7 @@ class Queue implements ArrayAccess, Countable, IteratorAggregate
 			return $this->pop();
 		}
 		$oldValue = $this->offsetGet($offset);
-		$newData = new SplFixedArray($this->data->getSize());
+		$newData = array_fill(0, count($this->data), null);
 		$i = 0;
 		foreach($this as $oldIndex => $element) {
 			if($oldIndex != $offset) {
