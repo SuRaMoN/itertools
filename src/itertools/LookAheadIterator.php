@@ -78,7 +78,7 @@ class LookAheadIterator extends IteratorIterator
         return $this->lookAheads->offsetGet($n)->value;
     }
 
-    public function getAny()
+    public function hasAny()
     {
         return $this->hasNext(0);
     }
