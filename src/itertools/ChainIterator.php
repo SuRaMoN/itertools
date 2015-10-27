@@ -2,10 +2,8 @@
 
 namespace itertools;
 
-use ArrayIterator;
 use EmptyIterator;
 use OuterIterator;
-use Traversable;
 
 
 class ChainIterator implements OuterIterator

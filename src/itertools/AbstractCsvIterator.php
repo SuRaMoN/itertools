@@ -22,6 +22,7 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 			'ignoreMissingRows' => false, // Deprecated: use ignoreMissingColumns
 			'ignoreMissingColumns' => false, // columns*
 			'combineFirstNRowsAsHeader' => 1,
+            'skipFirstNRows' => 0
 		);
 
 		$unknownOptions = array_diff(array_keys($options), array_keys($defaultOptions));
@@ -41,6 +42,12 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 			if(null === $this->options['header']) {
 				$it = $this->getLineIteratorWithHeaderInFirstLines();
 			} else {
+                $i = 0;
+                while($this->options['skipFirstNRows'] > $i) {
+                    $i++;
+                    $this->retrieveNextCsvRow();
+                }
+
 				$it = $this->getLineIteratorWithHeader($this->options['header']);
 			}
 		} else {
@@ -53,7 +60,7 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 
 	protected function getLineIteratorWithoutHeader()
 	{
-		return new CallbackIterator(array($this, 'retrieveNextCsvRow'));
+		return new SliceIterator(new CallbackIterator(array($this, 'retrieveNextCsvRow')), $this->options['skipFirstNRows']);
 	}
 
 	protected function getLineIteratorWithHeader($header)
@@ -63,6 +70,7 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 		}
 		$nextRowRetriever = array($this, 'retrieveNextCsvRow');
 		$options = $this->options;
+
 		if ($options['hasHeader'] && null !== $options['header']) {
             $this->retrieveNextCsvRow();
         }
@@ -88,16 +96,22 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 
 	protected function getLineIteratorWithHeaderInFirstLines()
 	{
-		$headers = array_map(array($this, 'retrieveNextCsvRow'), range(1, $this->options['combineFirstNRowsAsHeader']));
+		$headers = array_map(array($this, 'retrieveNextCsvRow'), range(1, $this->options['skipFirstNRows'] + $this->options['combineFirstNRowsAsHeader']));
 		$combinedHeader = null;
+        $i = 0;
 		foreach($headers as $header) {
+            if($this->options['skipFirstNRows'] > $i) {
+                $i++;
+                continue;
+            }
+
 			if(false === $header || null === $header) {
 				return new EmptyIterator();
 			}
 			if(null === $combinedHeader) {
 				$combinedHeader = array_fill_keys(array_keys($header), '');
 			}
-			$previousNonEmtpyColumnTitle = '';
+			$previousNonEmptyColumnTitle = '';
 			foreach($header as $i => $columnTitle) {
 				if(! array_key_exists($i, $header)) {
 					if(! $this->options['ignoreMissingColumns']) {
@@ -108,9 +122,9 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 				}
 				$combinedHeader[$i] .=
 					('' == trim($combinedHeader[$i]) || '' == trim($columnTitle) ? '' : ' ') .
-					('' == trim($columnTitle) ? $previousNonEmtpyColumnTitle : $columnTitle);
+					('' == trim($columnTitle) ? $previousNonEmptyColumnTitle : $columnTitle);
 				if('' != trim($columnTitle)) {
-					$previousNonEmtpyColumnTitle = $columnTitle;
+					$previousNonEmptyColumnTitle = $columnTitle;
 				}
 			}
 		}
