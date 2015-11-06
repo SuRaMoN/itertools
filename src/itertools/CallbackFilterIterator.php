@@ -4,7 +4,6 @@ namespace itertools;
 
 use InvalidArgumentException;
 use FilterIterator;
-use Iterator;
 
 
 /** For PHP 5.3 */
