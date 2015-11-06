@@ -4,7 +4,6 @@ namespace itertools;
 
 use BadMethodCallException;
 use EmptyIterator;
-use IteratorIterator;
 use ReflectionClass;
 
 
@@ -142,5 +141,12 @@ class ComposingIterator extends ReferencingIterator
 	{
 		return $this->setInnerIterator($iterable);
 	}
+
+    public function skipEmptyRows()
+    {
+        return $this->filter(function($row) {
+            return !("" == trim(implode("", $row)));
+        });
+    }
 }
  
