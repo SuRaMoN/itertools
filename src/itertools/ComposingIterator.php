@@ -145,7 +145,11 @@ class ComposingIterator extends ReferencingIterator
     public function skipEmptyRows()
     {
         return $this->filter(function($row) {
-            return !("" == trim(implode("", $row)));
+            if(is_array($row)) {
+                return "" != trim(implode("", $row));
+            }
+
+            return "" != $row;
         });
     }
 }
