@@ -83,7 +83,7 @@ abstract class AbstractCsvIterator extends TakeWhileIterator
 				return array_combine($header, $row);
 			}
 			if(! $options['ignoreMissingColumns']) {
-				throw new InvalidArgumentException('You provided a csv with missing rows');
+				throw new InvalidArgumentException('Your headers and columns do not match');
 			}
 			if(count($header) < count($row)) {
 				$row = array_slice($row, 0, count($header));
