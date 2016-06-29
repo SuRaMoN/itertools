@@ -30,7 +30,7 @@ class LockingIterator extends IteratorIterator
             throw new Exception("Error while trying to open lockfile '{$this->dir}/$name'");
         }
         $flockStatus = flock($this->lockFp, LOCK_EX);
-        if (false === $this->flockStatus) {
+        if (false === $flockStatus) {
             throw new Exception("Error while trying to lock file '{$this->dir}/$name'");
         }
     }
