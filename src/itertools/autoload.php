@@ -44,6 +44,7 @@ spl_autoload_register(function ($class) {
 		'itertools\SubstringLocation',
 		'itertools\TakeWhileIterator',
 		'itertools\TemplateToSubstringMapConverter',
+        'itertools\TimedAutoTransactionBatchIterator',
 		'itertools\UniqueIterator',
 		'itertools\ZipIterator',
 	);
