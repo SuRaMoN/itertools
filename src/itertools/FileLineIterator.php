@@ -27,7 +27,8 @@ class FileLineIterator extends TakeWhileIterator
 
         if ($file instanceof \GuzzleHttp\Stream\StreamInterface) {
             $this->guzzleStream = $file;
-            $file = (clone $file)->detach();
+            $file = clone $file;
+            $file = $file->detach();
         }
 
         if ($file instanceof \Guzzle\Stream\StreamInterface) {
