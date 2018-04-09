@@ -2,6 +2,7 @@
 
 namespace itertools;
 
+use GuzzleHttp\Stream\Stream;
 use PHPUnit_Framework_TestCase;
 use SplFileInfo;
 
@@ -157,6 +158,25 @@ EOF
 		$this->assertEquals("Josephin\xc3\xa8", $data[0]['name']);
 		$this->assertEquals("Albr\xc3\xa9ne", $data[1]['name']);
 	}
+	
+	public function testFileCsvIteratorWithStreamInterface()
+    {
+        $tmpFile = tmpfile();
+        fwrite($tmpFile, <<<EOF
+"col1", "col2"
+"a11", "a12"
+"a21", "a22"
+EOF
+        );
+        rewind($tmpFile);
+        $stream = new Stream($tmpFile);
+
+        $fileCsvIterator = new FileCsvIterator($stream);
+        unset($stream);
+        $data = iterator_to_array($fileCsvIterator);
+        $this->assertCount(2, $data);
+        $this->assertEquals('a22', $data[1]['col2']);
+    }
 
 	protected function getMemoryFileHandle($content)
 	{

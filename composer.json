@@ -1,4 +1,3 @@
-
 {
 	"name": "suramon/itertools",
 	"description": "Iterators implemented in PHP, copy-pasted from Python",
@@ -14,6 +13,9 @@
 	"require": { "php": ">=5.3" },
 	"autoload": {
 		"psr-0": { "itertools": "src" }
+	},
+	"require-dev": {
+		"guzzlehttp/streams": "^3.0",
+		"phpunit/phpunit": "~5.7"
 	}
 }
-
