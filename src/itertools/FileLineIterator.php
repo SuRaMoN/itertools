@@ -2,10 +2,8 @@
 
 namespace itertools;
 
-use EmptyIterator;
 use Exception;
 use InvalidArgumentException;
-
 
 class FileLineIterator extends TakeWhileIterator
 {
@@ -26,6 +24,11 @@ class FileLineIterator extends TakeWhileIterator
         }
 
         $options = (object) array_merge($defaultOptions, $options);
+
+        if ($file instanceof \GuzzleHttp\Stream\StreamInterface) {
+            $this->guzzleStream = $file;
+            $file = (clone $file)->detach();
+        }
 
         if ($file instanceof \Guzzle\Stream\StreamInterface) {
             $this->guzzleStream = $file;
