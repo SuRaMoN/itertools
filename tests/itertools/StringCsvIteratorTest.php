@@ -4,7 +4,6 @@ namespace itertools;
 
 use PHPUnit_Framework_TestCase;
 
-
 class StringCsvIteratorTest extends PHPUnit_Framework_TestCase
 {
 	/** @test */
@@ -38,7 +37,7 @@ EOF
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException itertools\InvalidCsvException
 	 */
 	public function testStringCsvWithMissingRowsException()
 	{
