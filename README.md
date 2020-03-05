@@ -41,11 +41,11 @@ Iterator equivalent of flattening a 2-dimensional array.
 
 ChunkingIterator
 ----------------
-splits a iterator into smaller chunks. this can be used for batch processing.
+Splits a iterator into smaller chunks. this can be used for batch processing.
 
-    $iterator = new rangeiterator();
+    $iterator = new RangeIterator();
     $batchsize = 100;
-    foreach(new hunkingiterator($iterator, $batchsize) as $chunk) {
+    foreach(new ChunkingIterator($iterator, $batchsize) as $chunk) {
         $pdo->starttransaction();
         foreach($chunk as $element) {
             // process the iterator elements. using the transaction inside the chunkiterator makes sure the transaction stays small
