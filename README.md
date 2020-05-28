@@ -1,7 +1,7 @@
 itertools
 =========
 
-A set of iterators for PHP based on pythons [itertools](http://docs.python.org/2/library/itertools.html).
+A set of iterators for PHP based on pythons [itertools](https://docs.python.org/2/library/itertools.html).
 
 [![Build Status](https://travis-ci.org/SuRaMoN/itertools.png?branch=master)](https://travis-ci.org/SuRaMoN/itertools) [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/SuRaMoN/itertools/badges/quality-score.png?s=e5c12675df1cfe519f2e2a8f89197f33ceb8304c)](https://scrutinizer-ci.com/g/SuRaMoN/itertools/) [![Code Coverage](https://scrutinizer-ci.com/g/SuRaMoN/itertools/badges/coverage.png?s=58f4d2d1cea8f7a5c4e7625404af3844eb8f2ebb)](https://scrutinizer-ci.com/g/SuRaMoN/itertools/)
 
@@ -97,7 +97,7 @@ foreach($range as $i) {
 
 MapIterator
 -----------
-Iterator equivalent or [array_map](http://be1.php.net/manual/en/function.array-map.php).
+Iterator equivalent or [array_map](https://www.php.net/manual/en/function.array-map.php).
 
 ```php
 $positiveNumbers = new RangeIterator(0, INF); // all numbers from 0 to infinity
@@ -106,14 +106,14 @@ $positiveSquareNumbers = new MapIterator($positiveNumbers, function($n) {return 
 
 SliceIterator
 -------------
-Iterator equivalent of [array_slice](http://be1.php.net/manual/en/function.array-slice.php).
+Iterator equivalent of [array_slice](https://www.php.net/manual/en/function.array-slice.php).
 
     $lines = new SliceIterator(new FileLineIterator('file.txt'), 0, 1000); // will iterate the first 1000 lines of the file
 
 
 UniqueIterator
 --------------
-Iterator equivalent of [array_unique](http://be1.php.net/manual/en/function.array-unique.php) but only works for sorted input.
+Iterator equivalent of [array_unique](https://www.php.net/manual/en/function.array-unique.php) but only works for sorted input.
 
 ```php
 $uniqueEntries = new UniqueIterator(new ArrayIterator(array(1, 2, 2, 2, 3, 4, 2))); // will contain 1, 2, 3, 4, 2
@@ -121,7 +121,7 @@ $uniqueEntries = new UniqueIterator(new ArrayIterator(array(1, 2, 2, 2, 3, 4, 2)
 
 RangeIterator
 -------------
-Iterator equivalent of [range](http://be1.php.net/manual/en/function.range.php).
+Iterator equivalent of [range](https://www.php.net/manual/en/function.range.php).
 
 ```php
 $lines = new SliceIterator(new FileLineIterator('file.txt'), 0, 1000); // will iterate the first 1000 lines of the file
@@ -129,7 +129,7 @@ $lines = new SliceIterator(new FileLineIterator('file.txt'), 0, 1000); // will i
 
 ZipIterator
 -----------
-Inspired by pythons [zip](http://docs.python.org/3.1/library/functions.html#zip) function. It can be constructed with an array of iterators and it iterates all of its arguments at the same index, returning during each iteration an array of the elements of each iterator on the same iteration positon
+Inspired by pythons [zip](https://docs.python.org/3.1/library/functions.html#zip) function. It can be constructed with an array of iterators and it iterates all of its arguments at the same index, returning during each iteration an array of the elements of each iterator on the same iteration positon
 
 ```php
 $csv1 = new FileCsvIterator('file1.csv');
